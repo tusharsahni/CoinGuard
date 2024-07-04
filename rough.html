@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <button id="openModalBtn" class="bg-blue-500 text-white px-4 py-2 rounded">Add Entry</button>
+
+    <!-- The Modal -->
+    <div id="myModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg overflow-hidden shadow-xl w-1/3">
+            <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-lg font-semibold">Add Entry</h2>
+                <button class="close text-gray-600">&times;</button>
+            </div>
+            <form id="popupForm" class="p-4">
+                <div class="mb-4">
+                    <label for="name" class="block text-gray-700">Name:</label>
+                    <input type="text" id="name" name="name" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label for="amount" class="block text-gray-700">Amount:</label>
+                    <input type="number" id="amount" name="amount" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" class="close bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table id="dataTable" class="min-w-full bg-white shadow-md rounded mt-6">
+        <thead class="bg-gray-200 text-gray-600">
+            <tr>
+                <th class="py-2 px-4 border-b">Name</th>
+                <th class="py-2 px-4 border-b">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table rows will be added here -->
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('openModalBtn').addEventListener('click', function() {
+            document.getElementById('myModal').classList.remove('hidden');
+        });
+
+        document.querySelectorAll('.close').forEach(el => {
+            el.addEventListener('click', function() {
+                document.getElementById('myModal').classList.add('hidden');
+            });
+        });
+
+        document.getElementById('popupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const amount = document.getElementById('amount').value;
+
+            const table = document.getElementById('dataTable').querySelector('tbody');
+            const newRow = table.insertRow();
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            cell1.textContent = name;
+            cell2.textContent = amount;
+
+            document.getElementById('popupForm').reset();
+            document.getElementById('myModal').classList.add('hidden');
+        });
+    </script>
+
+</body>
+</html>
