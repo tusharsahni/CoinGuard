@@ -3,43 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finance Tracker</title>
+    <title>Coinguard - Personal Finance Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        #expenseChart {
+            max-width: 300px;
+            max-height: 300px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Function to update the progress bar
+        function updateProgress() {
+            const monthlyIncome = 4567.89;  // Example income
+            const monthlyExpenses = 2345.67;  // Example expenses
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
+            progressBar.style.width = progressPercentage + '%';
+            document.getElementById('progress-text').innerText = progressPercentage.toFixed(2) + '%';
+        }
+
+        // Function to initialize the pie chart
+        function initializePieChart() {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            const expenseChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Rent', 'Groceries', 'Utilities', 'Entertainment', 'Miscellaneous'],
+                    datasets: [{
+                        label: 'Expenses',
+                        data: [800, 500, 200, 300, 545.67],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Expense Distribution'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Call the functions when the page loads
+        window.onload = function() {
+            updateProgress();
+            initializePieChart();
+        };
+    </script>
 </head>
-<body class="bg-gray-100">
-    <!-- Navbar -->
-    <nav class="bg-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="shrink-0 flex items-center">
-                        <a href="#" class="text-2xl font-bold text-gray-800">CoinGuard</a>
-                    </div>
-                </div>
-                <div class="flex items-center">
-                    <a href="#" class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Transaction</a>
-                    <a href="#" class="text-gray-800 hover:text-gray-600 px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                </div>
-            </div>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="./homepage.html">
+            <h1 class="text-2xl font-bold">Coinguard</h1>
+            </a>
+            <nav>
+                <ul class="flex space-x-4">
+                   
+                    <li><a href="./history.html" class="text-gray-300 hover:text-white">History</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Login/Signup</a></li>
+                </ul>
+            </nav>
         </div>
-    </nav>
+    </header>
 
     <!-- Main Content -->
-    
-    <main>
-        <div class="flex space-x-8 max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <!-- Content goes here -->
-            <div class="px-2 py-3 w-1/3 h-1/2 sm:px-0">
-                <div class="border-4 border-dashed border-gray-200 rounded-lg h-96">
-                    <p class="text-center text-gray-500 mt-40">Track your finances with ease.</p>
+    <main class="container mx-auto p-6">
+        <section class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4 ">Dashboard</h2>
+            <!-- Progress Tracker -->
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold text-gray-700">Spending Progress</h3>
+                <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                    <div id="progress-bar" class="bg-blue-600 h-4 rounded-full" style="width: 0;"></div>
+                </div>
+                <p class="text-gray-700">You have spent <span id="progress-text">0%</span> of your monthly income.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-gray-50 p-4 rounded-lg shadow">
+                    <h3 class="text-lg font-semibold text-gray-700">Account Balance</h3>
+                    <p class="text-2xl font-bold text-green-500">$12,345.67</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg shadow">
+                    <h3 class="text-lg font-semibold text-gray-700">Monthly Expenses</h3>
+                    <p class="text-2xl font-bold text-red-600">$2,345.67</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-lg shadow">
+                    <h3 class="text-lg font-semibold text-gray-700">Monthly Income</h3>
+                    <p class="text-2xl font-bold text-black">$4,567.89</p>
                 </div>
             </div>
-            <div class="px-2 py-3 w-1/3 h-1/2 sm:px-0">
-                <div class="border-4 border-dashed border-gray-200 rounded-lg h-96">
-                    <p class="text-center text-gray-500 mt-40">Track your finances with ease.</p>
-                </div>
+
+            
+
+            <!-- Pie Chart Section -->
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold text-gray-700">Expense Distribution</h3>
+                <canvas id="expenseChart" width="100" height="100"></canvas>
             </div>
-        </div>
+        </section>
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white p-4 mt-6 sticky absolute bottom-0 left-0 right-0">
+        <div class="container mx-auto text-center">
+            &copy; 2024 Coinguard. All rights reserved.
+        </div>
+    </footer>
+
 </body>
 </html>
