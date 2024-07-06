@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coinguard - Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        function toggleEdit() {
+            const editButton = document.getElementById('edit-button');
+            const saveButton = document.getElementById('save-button');
+            const cancelButton = document.getElementById('cancel-button');
+            const displayFields = document.querySelectorAll('.display-field');
+            const editFields = document.querySelectorAll('.edit-field');
+
+            displayFields.forEach(field => field.classList.toggle('hidden'));
+            editFields.forEach(field => field.classList.toggle('hidden'));
+            editButton.classList.toggle('hidden');
+            saveButton.classList.toggle('hidden');
+            cancelButton.classList.toggle('hidden');
+        }
+
+        function cancelEdit() {
+            toggleEdit();
+        }
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="./homepage.html">
+                <h1 class="text-2xl font-bold">Coinguard</h1>
+            </a>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="./dashboard.html" class="text-gray-300 hover:text-white">Dashboard</a></li>
+                    <li><a href="./history.html" class="text-gray-300 hover:text-white">History</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <section class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-xl font-semibold mb-4">Profile</h2>
+            <div class="flex flex-col md:flex-row md:space-x-6">
+                <div class="flex-shrink-0 mb-4 md:mb-0">
+                    <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic display-field">
+                    <input type="file" class="mt-2 edit-field hidden">
+                </div>
+                <div class="flex-grow">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                            <p class="display-field">John Doe</p>
+                            <input type="text" id="name" name="name" value="John Doe" class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <p class="display-field">john.doe@example.com</p>
+                            <input type="email" id="email" name="email" value="john.doe@example.com" class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                            <p class="display-field">+1 234567890</p>
+                            <div class="flex mt-1 edit-field hidden">
+                                <select id="phone-code" name="phone-code" class="block w-1/4 p-2 border border-gray-300 rounded-l-md">
+                                    <option value="+1">+1</option>
+                                    <option value="+44">+44</option>
+                                    <option value="+91">+91</option>
+                                    <option value="+61">+61</option>
+                                    <!-- Add more country codes as needed -->
+                                </select>
+                                <input type="tel" id="phone" name="phone" value="234567890" class="block w-3/4 p-2 border border-gray-300 rounded-r-md">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="income" class="block text-sm font-medium text-gray-700">Income</label>
+                            <p class="display-field">$4567.89</p>
+                            <input type="number" id="income" name="income" value="4567.89" class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                        </div>
+                        <div>
+                            <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+                            <p class="display-field">USA</p>
+                            <input type="text" id="country" name="country" value="USA" class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                        </div>
+                        <div>
+                            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
+                            <p class="display-field">Male</p>
+                            <select id="gender" name="gender" class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                                <option>Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 text-right">
+                <button id="edit-button" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" onclick="toggleEdit()">Edit</button>
+                <button id="save-button" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 hidden" onclick="toggleEdit()">Save</button>
+                <button id="cancel-button" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 hidden" onclick="cancelEdit()">Cancel</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white p-4 mt-6 sticky absolute bottom-0 left-0 right-0">
+        <div class="container mx-auto text-center">
+            &copy; 2024 Coinguard. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
