@@ -28,11 +28,11 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- Main Content
     <main class="container mx-auto p-6">
         <section class="bg-white p-6 rounded-lg shadow-md">
             <h2 class="text-xl font-semibold mb-4 ">Dashboard</h2>
-            <!-- Progress Tracker -->
+            Progress Tracker
             <div class="mt-6">
                 <h3 class="text-lg font-semibold text-gray-700">Spending Progress</h3>
                 <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
@@ -57,96 +57,123 @@
 
 
 
-            <!-- Pie Chart Section -->
+            Pie Chart Section
             <div class="mt-6">
                 <h3 class="text-lg font-semibold text-gray-700">Expense Distribution</h3>
                 <canvas id="expenseChart" width="100" height="100"></canvas>
             </div>
         </section>
-    </main>
+    </main> -->
+    <main class="container mx-auto p-6">
+        <section>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white p-4 mt-6 sticky absolute bottom-0 left-0 right-0">
-        <div class="container mx-auto text-center">
-            &copy; 2024 Coinguard. All rights reserved.
-        </div>
-    </footer>
-    <script>
+            <!-- Grid for Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+                <div class=" border-dashed border-4 p-4 rounded-lg shadow flex justify-center items-center">
+                    <i class="fa-solid fa-plus text-3xl" style="color: #585d72;"></i>
+                </div>
+                <!-- Example Card (Replace with dynamic data) -->
+                <a href="./budget.html">
+                    <div class="bg-gray-50 p-4 rounded-lg shadow ">
+                        <h3 class="text-lg font-semibold text-gray-700">Budget Name</h3>
+                        <div class="mt-2">
+                            <div class="flex items-center">
+                                <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                                    <div id="budget-progress" class="bg-blue-600 h-4 rounded-full" style="width: 50%;">
+                                    </div>
+                                </div>
+                                <span class="ml-2 text-gray-700" id="budget-progress-text">50%</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
 
-        document.addEventListener('DOMContentLoaded', function () {
-            Promise.all([
-                fetch('navbar.html').then(response => response.text()),
-            ]).then(data => {
-                document.getElementById('navbar').innerHTML = data[0];
+                
 
-            });
-        });
-        // Function to update the progress bar
-        function updateProgress() {
-            const monthlyIncome = 4567.89;  // Example income
-            const monthlyExpenses = 2345.67;  // Example expenses
-            const progressBar = document.getElementById('progress-bar');
-            const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
-            progressBar.style.width = progressPercentage + '%';
-            document.getElementById('progress-text').innerText = progressPercentage.toFixed(2) + '%';
-        }
+            </div>
 
-        // Function to initialize the pie chart
-        function initializePieChart() {
-            const ctx = document.getElementById('expenseChart').getContext('2d');
-            const expenseChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Rent', 'Groceries', 'Utilities', 'Entertainment', 'Miscellaneous'],
-                    datasets: [{
-                        label: 'Expenses',
-                        data: [800, 500, 200, 300, 545.67],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.5)',
-                            'rgba(54, 162, 235, 0.5)',
-                            'rgba(255, 206, 86, 0.5)',
-                            'rgba(75, 192, 192, 0.5)',
-                            'rgba(153, 102, 255, 0.5)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Expense Distribution'
-                        }
-                    }
+            <!-- Footer -->
+            <footer class="bg-gray-900 text-white p-4 mt-6 absolute bottom-0 left-0 right-0">
+                <div class="container mx-auto text-center">
+                    &copy; 2024 Coinguard. All rights reserved.
+                </div>
+            </footer>
+            <script>
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    Promise.all([
+                        fetch('navbar.html').then(response => response.text()),
+                    ]).then(data => {
+                        document.getElementById('navbar').innerHTML = data[0];
+
+                    });
+                });
+                // Function to update the progress bar
+                function updateProgress() {
+                    const monthlyIncome = 4567.89;  // Example income
+                    const monthlyExpenses = 2345.67;  // Example expenses
+                    const progressBar = document.getElementById('progress-bar');
+                    const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
+                    progressBar.style.width = progressPercentage + '%';
+                    document.getElementById('progress-text').innerText = progressPercentage.toFixed(2) + '%';
                 }
-            });
-        }
 
-        // Call the functions when the page loads
-        window.onload = function () {
-            updateProgress();
-            initializePieChart();
-        };
+                // Function to initialize the pie chart
+                function initializePieChart() {
+                    const ctx = document.getElementById('expenseChart').getContext('2d');
+                    const expenseChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Rent', 'Groceries', 'Utilities', 'Entertainment', 'Miscellaneous'],
+                            datasets: [{
+                                label: 'Expenses',
+                                data: [800, 500, 200, 300, 545.67],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.5)',
+                                    'rgba(54, 162, 235, 0.5)',
+                                    'rgba(255, 206, 86, 0.5)',
+                                    'rgba(75, 192, 192, 0.5)',
+                                    'rgba(153, 102, 255, 0.5)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(153, 102, 255, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Expense Distribution'
+                                }
+                            }
+                        }
+                    });
+                }
 
-        function showDropdown() {
-            document.getElementById('dropdownContent').classList.remove('hidden');
-        }
+                // Call the functions when the page loads
+                window.onload = function () {
+                    updateProgress();
+                    initializePieChart();
+                };
 
-        function hideDropdown() {
-            document.getElementById('dropdownContent').classList.add('hidden');
-        }
-    </script>
+                function showDropdown() {
+                    document.getElementById('dropdownContent').classList.remove('hidden');
+                }
+
+                function hideDropdown() {
+                    document.getElementById('dropdownContent').classList.add('hidden');
+                }
+            </script>
 </body>
 
 </html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/078e2f97cb.js" crossorigin="anonymous"></script>
+    <style>
+        #expenseChart {
+            width: 100%;
+            max-width: 400px;
+            max-height: 400px;
+        }
+
+        #myChart {
+            width: 100%;
+            max-width: 550px;
+            max-height: 500px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="./homepage.html">
+                <h1 class="text-2xl font-bold">Coinguard</h1>
+            </a>
+            <div id="navbar"></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <!-- Heading -->
+        <section class="bg-white p-6 rounded-t-lg shadow-md">
+            <h1 class="text-center text-4xl">Budget Name</h1>
+        </section>
+        <!-- Progress Tracker -->
+        <section class="bg-white p-6 shadow-md">
+            <div class=" w-1/5">
+                <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
+                    <div id="progress-bar" class="bg-blue-600 h-4 rounded-full" style="width: 0;"></div>
+                </div>
+                <p class="text-gray-700 text-xs">You have spent <span id="progress-text">0%</span> of your monthly
+                    income.</p>
+            </div>
+        </section>
+        <!-- Pie Chart Section -->
+        <section class="bg-white p-6 shadow-md">
+            <h2 class="text-xl font-semibold">Expense Distribution</h2>
+            <div class="flex justify-around items-start space-x-4">
+                <!-- Using Tailwind CSS classes to manage the size of the charts -->
+
+                <div class="flex flex-col items-center">
+                    <div class="mb-4 mt-5">
+
+                        <div class="flex flex-wrap justify-center">
+                            <div class="flex items-center mr-4">
+                                <span class="w-4 h-4 bg-red-500 inline-block mr-2"></span>
+                                <span>Rent</span>
+                            </div>
+                            <div class="flex items-center mr-4">
+                                <span class="w-4 h-4 bg-blue-500 inline-block mr-2"></span>
+                                <span>Groceries</span>
+                            </div>
+                            <div class="flex items-center mr-4">
+                                <span class="w-4 h-4 bg-yellow-500 inline-block mr-2"></span>
+                                <span>Utilities</span>
+                            </div>
+                            <div class="flex items-center mr-4">
+                                <span class="w-4 h-4 bg-green-500 inline-block mr-2"></span>
+                                <span>Entertainment</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-4 h-4 bg-purple-500 inline-block mr-2"></span>
+                                <span>Miscellaneous</span>
+                            </div>
+                        </div>
+                    </div>
+                    <canvas id="expenseChart" class="max-w-xs"></canvas>
+                </div>
+                <canvas id="myChart" class="max-w-sm"></canvas>
+            </div>
+            <hr class="opacity-40 mt-6">
+        </section>
+        <!-- Add Transaction Button -->
+        <section class="bg-white pt-3 pl-6 shadow-md">
+            <button id="openModalBtn"
+                class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Add
+                Transaction</button>
+        </section>
+        <section>
+            <!-- The Modal -->
+            <div id="myModal" class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 items-center justify-center hidden">
+                <div class="bg-white rounded-lg overflow-hidden shadow-xl w-1/3">
+                    <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+                        <h2 class="text-lg font-semibold">Add Entry</h2>
+                        <button class="close text-gray-600">&times;</button>
+                    </div>
+                    <form id="popupForm" class="p-4">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700">Name:</label>
+                            <input type="text" id="name" name="name"
+                                class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="type" class="block text-gray-700">Type:</label>
+                            <input type="text" id="type" name="type"
+                                class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="date" class="block text-gray-700">Date:</label>
+                            <input type="date" id="date" name="date"
+                                class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="amount" class="block text-gray-700">Amount:</label>
+                            <input type="number" id="amount" name="amount"
+                                class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="category" class="block text-gray-700">Category:</label>
+                            <input type="text" id="category" name="category"
+                                class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="button"
+                                class="close bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </section>
+        <!-- Transactions table -->
+        <section class="bg-white p-6 rounded-b-lg shadow-md">
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table id="dataTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Type
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Date
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Amount
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Category
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="data">
+                        <!-- data will be entered here. -->
+
+
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white p-4 mt-6 absolute left-0 right-0">
+        <div class="container mx-auto text-center">
+            &copy; 2024 Coinguard. All rights reserved.
+        </div>
+    </footer>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            Promise.all([
+                fetch('navbar.html').then(response => response.text()),
+            ]).then(data => {
+                document.getElementById('navbar').innerHTML = data[0];
+
+            });
+        });
+        // Function to update the progress bar
+        function updateProgress() {
+            const monthlyIncome = 10000;
+            const monthlyExpenses = 2345.67;
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
+            progressBar.style.width = progressPercentage + '%';
+            document.getElementById('progress-text').innerText = progressPercentage.toFixed(2) + '%';
+        }
+
+        // Function to initialize the pie chart
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            const expenseChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Rent', 'Groceries', 'Utilities', 'Entertainment', 'Miscellaneous'],
+                    datasets: [{
+                        data: [800, 500, 200, 300, 545.67],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'none',
+                        },
+                        title: {
+                            display: false,
+                            text: 'Expense Distribution'
+                        }
+                    }
+                }
+            });
+        });
+
+        //function to initialize bar graph 
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug'
+                        , 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Expenses',
+                        data: [12, 19, 3, 5, 2, 3, 5, 3, 69, 13, 12, 11],
+                        borderColor: 'rgba(255, 99, 132, 1)'
+
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
+        // Call the functions when the page loads
+        window.onload = function () {
+            updateProgress();
+        };
+
+        function showDropdown() {
+            document.getElementById('dropdownContent').classList.remove('hidden');
+        }
+
+        function hideDropdown() {
+            document.getElementById('dropdownContent').classList.add('hidden');
+        }
+
+        document.getElementById('openModalBtn').addEventListener('click', function () {
+            document.getElementById('myModal').classList.remove('hidden');
+        });
+
+        document.querySelectorAll('.close').forEach(el => {
+            el.addEventListener('click', function () {
+                document.getElementById('myModal').classList.add('hidden');
+            });
+        });
+
+        //function to add a new transaction 
+        document.getElementById('popupForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const type = document.getElementById('type').value;
+            const date = document.getElementById('date').value;
+            const amount = document.getElementById('amount').value;
+            const category = document.getElementById('category').value;
+
+            const newtRow = document.createElement('tr');
+            newtRow.className = 'odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700';
+            newtRow.innerHTML = `
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            ${name}
+                        </th>
+                        <td class="px-6 py-4">
+                            ${type}
+                        </td>
+                        <td class="px-6 py-4">
+                            ${date}
+                        </td>
+                        <td class="px-6 py-4">
+                            ${amount}
+                        </td>
+                        <td class="px-6 py-4">
+                            ${category}
+                        </td>
+
+                        <td class="px-6 py-4">
+                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        </td>
+                    `;
+            document.getElementById('data').appendChild(newtRow);
+
+            document.getElementById('popupForm').reset();
+            document.getElementById('myModal').classList.add('hidden');
+
+        });
+    </script>
+</body>
+
+</html>
