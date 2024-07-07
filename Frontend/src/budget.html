@@ -334,6 +334,122 @@
             document.getElementById('myModal').classList.add('hidden');
 
         });
+        //function to display transactions
+        document.addEventListener("DOMContentLoaded", () => {
+            const popupForm = document.getElementById("popupForm");
+            const dataTable = document.getElementById("dataTable");
+            const data = document.getElementById("data");
+            const errorMessage = document.getElementById("errorMessage");
+            const searchQuery = document.getElementById('searchQuery');
+            let isEditing = false;
+            const fetchData = async () => {
+                try {
+                    const response = await fetch(`http://localhost:3000/transactions`);
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok`);
+                    }
+                    const transactions = await response.json();
+                    displayBooks(transactions.data);
+                } catch (error) {
+                    errorMessage.textContent = `Server side error`;
+                }
+            };
+            const displayBooks = async (books) => {
+                data.innerHTML = "";
+
+                books.forEach((book) => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${book.id}</td>
+                        <td>${book.name}</td>
+                        <td>${book.type ? "Income" : "Expense"}</td>
+                        <td>${book.date}</td>
+                        <td>${book.category}</td>
+                        <td>${book.amount}</td>
+                        <td>
+                            <button onclick = "editTransaction('${book.id}')"><u>Edit</u></button>
+                            <button onclick = "deleteTransaction('${book.id}')"><u>Delete</u></button>
+                        </td>
+                        `;
+
+                    data.appendChild(row);
+                    document.getElementById('popupForm').reset();
+                    document.getElementById('myModal').classList.add('hidden');
+                });
+            };
+
+            //function to add a new transaction 
+            popupForm.addEventListener("submit", async (event) => {
+                const formData = new FormData(popupForm);
+                const transactionData = Object.fromEntries(formData);
+                try {
+                    if (isEditing) {
+                        response = await fetch(
+                            `http://localhost:3000/transactions/${transactionData.id}`,
+                            {
+                                method: "PUT",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify(transactionData),
+                            }
+                        );
+                    } else if (!isEditing) {
+                        response = await fetch(`http://localhost:3000/transactions`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(transactionData),
+                        });
+                    }
+
+                    const responseData = await response.json();
+
+                    alert(responseData.message);
+                    popupForm.reset();
+                    fetchData();
+                    isEditing = false;
+                } catch (error) {
+                    errorMessage.textContent = error.message;
+                }
+            });
+            window.deleteTransaction = async (id) => {
+                try {
+                    const response = await fetch(
+                        `http://localhost:3000/transactions/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    const responseData = await response.json();
+                    if (!response.ok) {
+                        errorMessage.textContent = responseData.error;
+                    }
+                    alert(responseData.message);
+                    fetchData();
+                } catch (error) {
+                    errorMessage.textContent = error.message;
+                }
+            };
+
+            window.editTransaction = async (id) => {
+                const transaction = Array.from(data.children).find(
+                    (transaction) => transaction.children[0].textContent === id
+                );
+                if (transaction) {
+                    showDropdown();
+                    document.getElementById("name").value =
+                        transaction.children[0].textContent;
+                    document.getElementById("type").value =
+                        transaction.children[1].textContent;
+                    document.getElementById("date").value =
+                        transaction.children[2].textContent;
+                    document.getElementById("category").value =
+                        transaction.children[3].textContent;
+                    document.getElementById("amount").value =
+                        transaction.children[4].textContent;
+                    isEditing = true;
+                }
+            };
+            fetchData();
+        });
     </script>
 </body>
 
