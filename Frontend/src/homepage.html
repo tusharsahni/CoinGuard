@@ -7,13 +7,6 @@
     <title>Coinguard - Personal Finance Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/078e2f97cb.js" crossorigin="anonymous"></script>
-    <style>
-        #expenseChart {
-            max-width: 300px;
-            max-height: 300px;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -27,69 +20,59 @@
             <div id="navbar"></div>
         </div>
     </header>
-
-    <!-- Main Content
     <main class="container mx-auto p-6">
-        <section class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-semibold mb-4 ">Dashboard</h2>
-            Progress Tracker
-            <div class="mt-6">
-                <h3 class="text-lg font-semibold text-gray-700">Spending Progress</h3>
-                <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+         <!-- Progress Tracker -->
+         <section class=" p-6">
+            <div class=" w-1/5">
+                <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
                     <div id="progress-bar" class="bg-blue-600 h-4 rounded-full" style="width: 0;"></div>
                 </div>
-                <p class="text-gray-700">You have spent <span id="progress-text">0%</span> of your monthly income.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-gray-50 p-4 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold text-gray-700">Account Balance</h3>
-                    <p class="text-2xl font-bold text-green-500">$12,345.67</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold text-gray-700">Monthly Expenses</h3>
-                    <p class="text-2xl font-bold text-red-600">$2,345.67</p>
-                </div>
-                <div class="bg-gray-50 p-4 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold text-gray-700">Monthly Income</h3>
-                    <p class="text-2xl font-bold text-black">$4,567.89</p>
-                </div>
-            </div>
-
-
-
-            Pie Chart Section
-            <div class="mt-6">
-                <h3 class="text-lg font-semibold text-gray-700">Expense Distribution</h3>
-                <canvas id="expenseChart" width="100" height="100"></canvas>
+                <p class="text-gray-700 text-xs">You have spent <span id="progress-text">0%</span> of your monthly
+                    income.</p>
             </div>
         </section>
-    </main> -->
-    <main class="container mx-auto p-6">
-        <section>
 
+
+        <section>
             <!-- Grid for Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-                <div class=" border-dashed border-4 p-4 rounded-lg shadow flex justify-center items-center">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 ">
+                <div id="openMyModal"
+                    class=" border-dashed border-4 p-4 rounded-lg shadow flex justify-center items-center cursor-pointer">
                     <i class="fa-solid fa-plus text-3xl" style="color: #585d72;"></i>
                 </div>
-                <!-- Example Card (Replace with dynamic data) -->
-                <a href="./budget.html">
-                    <div class="bg-gray-50 p-4 rounded-lg shadow ">
-                        <h3 class="text-lg font-semibold text-gray-700">Budget Name</h3>
-                        <div class="mt-2">
-                            <div class="flex items-center">
-                                <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
-                                    <div id="budget-progress" class="bg-blue-600 h-4 rounded-full" style="width: 50%;">
-                                    </div>
-                                </div>
-                                <span class="ml-2 text-gray-700" id="budget-progress-text">50%</span>
-                            </div>
+
+                <!-- popup form to add budget -->
+
+                <div id="myModalBudget"
+                    class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-xl w-1/3">
+                        <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+                            <h2 class="text-lg font-semibold">Add Budget</h2>
+                            <button class="close text-gray-600">&times;</button>
                         </div>
+                        <form id="popupFormBudget" class="p-4">
+                            <div class="mb-4">
+                                <label for="budgetName" class="block text-gray-700">Budget Name:</label>
+                                <input type="text" id="budgetName" name="budgetName"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="budgetAmount" class="block text-gray-700">Amount:</label>
+                                <input type="number" id="budgetAmount" name="budgetAmount"
+                                    class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    required>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="button"
+                                    class="close bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+                            </div>
+                        </form>
                     </div>
-                </a>
+                </div>
 
-                
-
+                <div id="budgetcard"></div>
             </div>
 
             <!-- Footer -->
@@ -99,17 +82,39 @@
                 </div>
             </footer>
             <script>
-
                 document.addEventListener('DOMContentLoaded', function () {
-                    Promise.all([
-                        fetch('navbar.html').then(response => response.text()),
-                    ]).then(data => {
-                        document.getElementById('navbar').innerHTML = data[0];
+                    // Fetch navbar content
+                    fetch('navbar.html')
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById('navbar').innerHTML = data;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching navbar:', error);
+                        });
+                    fetch('budgetcard.html')
+                        .then(response => response.text())
+                        .then(data => {
+                            document.getElementById('budgetcard').innerHTML = data;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching navbar:', error);
+                        });
+                    // Add event listener to open modal
+                    document.getElementById('openMyModal').addEventListener('click', function () {
+                        document.getElementById('myModalBudget').classList.remove('hidden');
+                    });
 
+                    // Add event listeners to close buttons
+                    document.querySelectorAll('.close').forEach(el => {
+                        el.addEventListener('click', function () {
+                            document.getElementById('myModalBudget').classList.add('hidden');
+                        });
                     });
                 });
-                // Function to update the progress bar
-                function updateProgress() {
+
+                // Function to update progress (example function)
+                function updateOverallProgress() {
                     const monthlyIncome = 4567.89;  // Example income
                     const monthlyExpenses = 2345.67;  // Example expenses
                     const progressBar = document.getElementById('progress-bar');
@@ -118,54 +123,10 @@
                     document.getElementById('progress-text').innerText = progressPercentage.toFixed(2) + '%';
                 }
 
-                // Function to initialize the pie chart
-                function initializePieChart() {
-                    const ctx = document.getElementById('expenseChart').getContext('2d');
-                    const expenseChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: ['Rent', 'Groceries', 'Utilities', 'Entertainment', 'Miscellaneous'],
-                            datasets: [{
-                                label: 'Expenses',
-                                data: [800, 500, 200, 300, 545.67],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.5)',
-                                    'rgba(54, 162, 235, 0.5)',
-                                    'rgba(255, 206, 86, 0.5)',
-                                    'rgba(75, 192, 192, 0.5)',
-                                    'rgba(153, 102, 255, 0.5)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 99, 132, 1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'top',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Expense Distribution'
-                                }
-                            }
-                        }
-                    });
-                }
-
-                // Call the functions when the page loads
+                // Call updateProgress when the page loads
                 window.onload = function () {
-                    updateProgress();
-                    initializePieChart();
+                    updateOverallProgress();
                 };
-
                 function showDropdown() {
                     document.getElementById('dropdownContent').classList.remove('hidden');
                 }
