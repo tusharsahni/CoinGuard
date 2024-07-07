@@ -97,13 +97,14 @@
         </section>
         <section>
             <!-- The Modal -->
-            <div id="myModal" class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 items-center justify-center hidden">
+            <div id="myModal" class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
                 <div class="bg-white rounded-lg overflow-hidden shadow-xl w-1/3">
                     <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
                         <h2 class="text-lg font-semibold">Add Entry</h2>
                         <button class="close text-gray-600">&times;</button>
                     </div>
                     <form id="popupForm" class="p-4">
+                        <input type="hidden" id="transactionId" name="id">
                         <div class="mb-4">
                             <label for="name" class="block text-gray-700">Name:</label>
                             <input type="text" id="name" name="name"
@@ -123,14 +124,14 @@
                                 required>
                         </div>
                         <div class="mb-4">
-                            <label for="amount" class="block text-gray-700">Amount:</label>
-                            <input type="number" id="amount" name="amount"
+                            <label for="category" class="block text-gray-700">Category:</label>
+                            <input type="text" id="category" name="category"
                                 class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required>
                         </div>
                         <div class="mb-4">
-                            <label for="category" class="block text-gray-700">Category:</label>
-                            <input type="text" id="category" name="category"
+                            <label for="amount" class="block text-gray-700">Amount:</label>
+                            <input type="number" id="amount" name="amount"
                                 class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required>
                         </div>
@@ -140,6 +141,7 @@
                             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
                         </div>
                     </form>
+                    
                 </div>
             </div>
 
@@ -150,6 +152,9 @@
                 <table id="dataTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
+                            <th scope="col" class="px-6 py-3">
+                                id
+                            </th>
                             <th scope="col" class="px-6 py-3">
                                 Name
                             </th>
@@ -296,44 +301,6 @@
             });
         });
 
-        //function to add a new transaction 
-        document.getElementById('popupForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const type = document.getElementById('type').value;
-            const date = document.getElementById('date').value;
-            const amount = document.getElementById('amount').value;
-            const category = document.getElementById('category').value;
-
-            const newtRow = document.createElement('tr');
-            newtRow.className = 'odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700';
-            newtRow.innerHTML = `
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            ${name}
-                        </th>
-                        <td class="px-6 py-4">
-                            ${type}
-                        </td>
-                        <td class="px-6 py-4">
-                            ${date}
-                        </td>
-                        <td class="px-6 py-4">
-                            ${amount}
-                        </td>
-                        <td class="px-6 py-4">
-                            ${category}
-                        </td>
-
-                        <td class="px-6 py-4">
-                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                        </td>
-                    `;
-            document.getElementById('data').appendChild(newtRow);
-
-            document.getElementById('popupForm').reset();
-            document.getElementById('myModal').classList.add('hidden');
-
-        });
         //function to display transactions
         document.addEventListener("DOMContentLoaded", () => {
             const popupForm = document.getElementById("popupForm");
@@ -381,8 +348,11 @@
 
             //function to add a new transaction 
             popupForm.addEventListener("submit", async (event) => {
+                event.preventDefault(); // Prevent the form from submitting normally
                 const formData = new FormData(popupForm);
                 const transactionData = Object.fromEntries(formData);
+                let response;
+            
                 try {
                     if (isEditing) {
                         response = await fetch(
@@ -393,24 +363,26 @@
                                 body: JSON.stringify(transactionData),
                             }
                         );
-                    } else if (!isEditing) {
+                    } else {
                         response = await fetch(`http://localhost:3000/transactions`, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify(transactionData),
                         });
                     }
-
+            
                     const responseData = await response.json();
-
                     alert(responseData.message);
                     popupForm.reset();
                     fetchData();
                     isEditing = false;
+                    document.getElementById('myModal').classList.add('hidden');
                 } catch (error) {
                     errorMessage.textContent = error.message;
                 }
             });
+            
+            //function to delete transaction
             window.deleteTransaction = async (id) => {
                 try {
                     const response = await fetch(
@@ -428,26 +400,24 @@
                     errorMessage.textContent = error.message;
                 }
             };
-
+            //function to edit transaction
             window.editTransaction = async (id) => {
                 const transaction = Array.from(data.children).find(
                     (transaction) => transaction.children[0].textContent === id
                 );
                 if (transaction) {
-                    showDropdown();
-                    document.getElementById("name").value =
-                        transaction.children[0].textContent;
-                    document.getElementById("type").value =
-                        transaction.children[1].textContent;
-                    document.getElementById("date").value =
-                        transaction.children[2].textContent;
-                    document.getElementById("category").value =
-                        transaction.children[3].textContent;
-                    document.getElementById("amount").value =
-                        transaction.children[4].textContent;
+                    document.getElementById("transactionId").value = transaction.children[0].textContent;
+                    document.getElementById("name").value = transaction.children[1].textContent;
+                    document.getElementById("type").value = transaction.children[2].textContent === "Income" ? 1 : 0;
+                    document.getElementById("date").value = transaction.children[3].textContent;
+                    document.getElementById("category").value = transaction.children[4].textContent;
+                    document.getElementById("amount").value = transaction.children[5].textContent;
                     isEditing = true;
+                    document.getElementById('myModal').classList.remove('hidden');
                 }
             };
+            
+            
             fetchData();
         });
     </script>
