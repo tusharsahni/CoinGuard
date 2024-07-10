@@ -15,15 +15,15 @@ app.use(express.json());
 app.use(express.static('public'));
 
 //routes
-const account = require('./routes/account');
-const category = require('./routes/category');
-const search = require('./routes/search');
-const transactions = require('./routes/transactions');
+const accountRoutes = require('./routes/account');
+const categoryRoutes = require('./routes/category');
+const searchRoutes = require('./routes/search');
+const transactionsRoutes = require('./routes/transactions');
 
-app.use('/account',account);
-app.use('/category',category);
-app.use('/search',search);
-app.use('/transactions',transactions);
+app.use('/account',accountRoutes);
+app.use('/category',categoryRoutes);
+app.use('/search',searchRoutes);
+app.use('/transactions',transactionsRoutes);
 
 //start the port
 app.listen(PORT, () => {
