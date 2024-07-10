@@ -111,12 +111,7 @@
                                 class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required>
                         </div>
-                        <div class="mb-4">
-                            <label for="type" class="block text-gray-700">Type:</label>
-                            <input type="text" id="type" name="type"
-                                class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                required>
-                        </div>
+                        
                         <div class="mb-4">
                             <label for="date" class="block text-gray-700">Date:</label>
                             <input type="date" id="date" name="date"
@@ -152,15 +147,11 @@
                 <table id="dataTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3">
-                                id
-                            </th>
+                            
                             <th scope="col" class="px-6 py-3">
                                 Name
                             </th>
-                            <th scope="col" class="px-6 py-3">
-                                Type
-                            </th>
+                            
                             <th scope="col" class="px-6 py-3">
                                 Date
                             </th>
@@ -303,123 +294,123 @@
 
         //function to display transactions
         document.addEventListener("DOMContentLoaded", () => {
-            const popupForm = document.getElementById("popupForm");
-            const dataTable = document.getElementById("dataTable");
-            const data = document.getElementById("data");
-            const errorMessage = document.getElementById("errorMessage");
-            const searchQuery = document.getElementById('searchQuery');
-            let isEditing = false;
-            const fetchData = async () => {
-                try {
-                    const response = await fetch(`http://localhost:3000/transactions`);
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok`);
-                    }
-                    const transactions = await response.json();
-                    displayBooks(transactions.data);
-                } catch (error) {
-                    errorMessage.textContent = `Server side error`;
-                }
-            };
-            const displayBooks = async (books) => {
-                data.innerHTML = "";
+    const popupForm = document.getElementById("popupForm");
+    const data = document.getElementById("data");
+    const errorMessage = document.getElementById("errorMessage");
+    let isEditing = false;
 
-                books.forEach((book) => {
-                    const row = document.createElement("tr");
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/transactions/transactions`);
+            if (!response.ok) {
+                throw new Error(`Network response was not ok`);
+            }
+            const transactions = await response.json();
+            displayTransactions(transactions.data);
+        } catch (error) {
+            errorMessage.textContent = `Server side error`;
+        }
+    };
 
-                    row.innerHTML = `
-                        <td>${book.id}</td>
-                        <td>${book.name}</td>
-                        <td>${book.type ? "Income" : "Expense"}</td>
-                        <td>${book.date}</td>
-                        <td>${book.category}</td>
-                        <td>${book.amount}</td>
-                        <td>
-                            <button onclick = "editTransaction('${book.id}')"><u>Edit</u></button>
-                            <button onclick = "deleteTransaction('${book.id}')"><u>Delete</u></button>
-                        </td>
-                        `;
+    const displayTransactions = (transactions) => {
+        data.innerHTML = "";
+        transactions.forEach((transaction) => {
+            const row = document.createElement("tr");
+            row.setAttribute("data-id", transaction.id); // Set a data attribute for the transaction ID
 
-                    data.appendChild(row);
-                    document.getElementById('popupForm').reset();
-                    document.getElementById('myModal').classList.add('hidden');
-                });
-            };
+            row.innerHTML = `
+                <td>${transaction.name}</td>
+                <td>${transaction.date}</td>
+                <td>${transaction.category}</td>
+                <td>${transaction.amount}</td>
+                <td>
+                    <button onclick="editTransaction('${transaction.id}')"><u>Edit</u></button>
+                    <button onclick="deleteTransaction('${transaction.id}')"><u>Delete</u></button>
+                </td>
+            `;
 
-            //function to add a new transaction 
-            popupForm.addEventListener("submit", async (event) => {
-                event.preventDefault(); // Prevent the form from submitting normally
-                const formData = new FormData(popupForm);
-                const transactionData = Object.fromEntries(formData);
-                let response;
-            
-                try {
-                    if (isEditing) {
-                        response = await fetch(
-                            `http://localhost:3000/transactions/${transactionData.id}`,
-                            {
-                                method: "PUT",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(transactionData),
-                            }
-                        );
-                    } else {
-                        response = await fetch(`http://localhost:3000/transactions`, {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(transactionData),
-                        });
-                    }
-            
-                    const responseData = await response.json();
-                    alert(responseData.message);
-                    popupForm.reset();
-                    fetchData();
-                    isEditing = false;
-                    document.getElementById('myModal').classList.add('hidden');
-                } catch (error) {
-                    errorMessage.textContent = error.message;
-                }
-            });
-            
-            //function to delete transaction
-            window.deleteTransaction = async (id) => {
-                try {
-                    const response = await fetch(
-                        `http://localhost:3000/transactions/${id}`, {
-                        method: 'DELETE'
-                    });
-
-                    const responseData = await response.json();
-                    if (!response.ok) {
-                        errorMessage.textContent = responseData.error;
-                    }
-                    alert(responseData.message);
-                    fetchData();
-                } catch (error) {
-                    errorMessage.textContent = error.message;
-                }
-            };
-            //function to edit transaction
-            window.editTransaction = async (id) => {
-                const transaction = Array.from(data.children).find(
-                    (transaction) => transaction.children[0].textContent === id
-                );
-                if (transaction) {
-                    document.getElementById("transactionId").value = transaction.children[0].textContent;
-                    document.getElementById("name").value = transaction.children[1].textContent;
-                    document.getElementById("type").value = transaction.children[2].textContent === "Income" ? 1 : 0;
-                    document.getElementById("date").value = transaction.children[3].textContent;
-                    document.getElementById("category").value = transaction.children[4].textContent;
-                    document.getElementById("amount").value = transaction.children[5].textContent;
-                    isEditing = true;
-                    document.getElementById('myModal').classList.remove('hidden');
-                }
-            };
-            
-            
-            fetchData();
+            data.appendChild(row);
         });
+    };
+
+    // Function to add a new transaction or update an existing one
+    popupForm.addEventListener("submit", async (event) => {
+        event.preventDefault(); // Prevent the form from submitting normally
+        const formData = new FormData(popupForm);
+        const transactionData = Object.fromEntries(formData);
+
+        try {
+            let response;
+            if (isEditing) {
+                response = await fetch(`http://localhost:3000/transactions/transactions`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(transactionData),
+                });
+            } else {
+                response = await fetch(`http://localhost:3000/transactions/transactions`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(transactionData),
+                });
+            }
+
+            const responseData = await response.json();
+            alert(responseData.message);
+            popupForm.reset();
+            fetchData();
+            isEditing = false;
+            document.getElementById('myModal').classList.add('hidden');
+        } catch (error) {
+            errorMessage.textContent = error.message;
+        }
+    });
+
+    // Function to delete a transaction
+    window.deleteTransaction = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:3000/transactions/transactions`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            });
+
+            const responseData = await response.json();
+            if (!response.ok) {
+                errorMessage.textContent = responseData.error;
+            }
+            alert(responseData.message);
+            fetchData();
+        } catch (error) {
+            errorMessage.textContent = error.message;
+        }
+    };
+
+    // Function to edit a transaction
+    window.editTransaction = async (id) => {
+        const transactionRow = document.querySelector(`tr[data-id='${id}']`);
+        if (transactionRow) {
+            const cells = transactionRow.children;
+            console.log("Editing transaction with ID:", id);
+            console.log("Cells:", cells);
+
+            document.getElementById("transactionId").value = id;
+            document.getElementById("name").value = cells[0].textContent;
+            document.getElementById("date").value = cells[1].textContent;
+            document.getElementById("category").value = cells[2].textContent;
+            document.getElementById("amount").value = cells[3].textContent;
+            
+            isEditing = true;
+            document.getElementById('myModal').classList.remove('hidden');
+        } else {
+            console.error("Transaction row not found for ID:", id);
+        }
+    };
+
+    fetchData();
+});
+
+
     </script>
 </body>
 
