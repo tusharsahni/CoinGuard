@@ -19,11 +19,14 @@ const accountRoutes = require('./routes/account');
 const categoryRoutes = require('./routes/category');
 const searchRoutes = require('./routes/search');
 const transactionsRoutes = require('./routes/transactions');
+const authRoutes = require('./routes/auth');
+
 
 app.use('/account',accountRoutes);
 app.use('/category',categoryRoutes);
 app.use('/search',searchRoutes);
 app.use('/transactions',transactionsRoutes);
+app.use('/auth',authRoutes);
 
 //start the port
 app.listen(PORT, () => {
