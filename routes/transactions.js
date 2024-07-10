@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const pool = require("./db");
+const pool = require("../db");
 
 const PORT = process.env.PORT || 3000;
 
@@ -95,6 +95,4 @@ app.delete("/transactions", async (req, res) => {
     res.status(500).json("Server side error");
   }
 });
-app.listen(PORT, () => {
-  console.log(`The server is running on http://localhost:${PORT}`);
-});
+
