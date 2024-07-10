@@ -47,9 +47,9 @@ app.post("/transactions", async (req, res) => {
 });
 
 //UPDATION
-app.put("/transactions/:id", async (req, res) => {
-  const { id } = req.params;
-  const { name, type, date, category, amount } = req.body;
+app.put("/transactions", async (req, res) => {
+  
+  const { name, type, date, category, amount ,id} = req.body;
 
   //validate input fields
   if (
@@ -73,8 +73,8 @@ app.put("/transactions/:id", async (req, res) => {
 });
 
 //DELETION
-app.delete("/transactions/:id", async (req, res) => {
-  const { id } = req.params;
+app.delete("/transactions", async (req, res) => {
+  const { id } = req.body;
 
   //validate input fields
   try {
