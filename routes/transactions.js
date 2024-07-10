@@ -5,14 +5,14 @@ const pool = require("../db");
 
 const PORT = process.env.PORT || 3000;
 
-const app = express();
+const router = express.Router();
 
-app.use(cors());
-app.use(morgan("dev"));
-app.use(express.json());
+router.use(cors());
+router.use(morgan("dev"));
+router.use(express.json());
 
 //RETRIEVAL
-app.get("/transactions", async (req, res) => {
+router.get("/transactions", async (req, res) => {
   try {
 
     const result = await pool.query("SELECT * FROM transactions");
@@ -24,7 +24,7 @@ app.get("/transactions", async (req, res) => {
 });
 
 //CREATION
-app.post("/transactions", async (req, res) => {
+router.post("/transactions", async (req, res) => {
   const { name, type, date, category, amount } = req.body;
 
   //validate input fields
@@ -47,7 +47,7 @@ app.post("/transactions", async (req, res) => {
 });
 
 //UPDATION
-app.put("/transactions", async (req, res) => {
+router.put("/transactions", async (req, res) => {
   
   const { name, type, date, category, amount ,id} = req.body;
 
@@ -73,7 +73,7 @@ app.put("/transactions", async (req, res) => {
 });
 
 //DELETION
-app.delete("/transactions", async (req, res) => {
+router.delete("/transactions", async (req, res) => {
   const { id } = req.body;
 
   //validate input fields
@@ -96,3 +96,4 @@ app.delete("/transactions", async (req, res) => {
   }
 });
 
+module.exports = router;

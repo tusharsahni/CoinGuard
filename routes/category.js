@@ -1,18 +1,18 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const pool = require("./db");
+const pool = require("../db");
 
 const PORT = process.env.PORT || 3000;
 
-const app = express();
+const router = express.Router();
 
-app.use(cors());
-app.use(morgan("dev"));
-app.use(express.json());
+router.use(cors());
+router.use(morgan("dev"));
+router.use(express.json());
 
 // Retrieve all categories
-app.get("/categories", async (req, res) => {
+router.get("/categories", async (req, res) => {
   try {
     const result = await pool.query("SELECT * FROM categories WHERE show = TRUE");
     res.json({ data: result.rows });
@@ -23,7 +23,7 @@ app.get("/categories", async (req, res) => {
 });
 
 // Create a new category
-app.post("/categories", async (req, res) => {
+router.post("/categories", async (req, res) => {
   const { user_id, name, amount, month, year } = req.body;
 
   // Validate input fields
@@ -46,7 +46,7 @@ app.post("/categories", async (req, res) => {
   }
 });
 //UPDATE CATEGORIES
-app.put("/categories", async (req,res) => {
+router.put("/categories", async (req,res) => {
     const { user_id,name, amount, month, year,category_id} = req.body;
 
   //validate input fields
@@ -71,7 +71,7 @@ app.put("/categories", async (req,res) => {
     
 });
 //DELETE 
-app.delete("/transactions", async (req, res) => {
+router.delete("/transactions", async (req, res) => {
     const { category_id } = req.body;
   
     //validate input fields
@@ -93,3 +93,6 @@ app.delete("/transactions", async (req, res) => {
     }
   });
 
+
+
+  module.exports = router;  

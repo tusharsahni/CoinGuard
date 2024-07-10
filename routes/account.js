@@ -1,17 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
-const pool = require("./db");
+const pool = require("../db");
 const PORT= process.env.PORT || 3000;
-const app=express();
+const router=express.Router();
 
 
-app.use(cors());
-app.use(morgan("dev"));
-app.use(express.json());
+router.use(cors());
+router.use(morgan("dev"));
+router.use(express.json());
 
 //RETRIEVAL
-app.get("/user_details", async (req, res) => {
+router.get("/account", async (req, res) => {
     try {
   
       const result = await pool.query("SELECT * FROM user_details");
@@ -24,7 +24,7 @@ app.get("/user_details", async (req, res) => {
 
 
 // UPDATE
-app.put("/user_details", async (req, res) => {
+router.put("/account", async (req, res) => {
     
     const {user_id , name, contact, country, gender} = req.body;
 
@@ -52,3 +52,5 @@ app.put("/user_details", async (req, res) => {
         res.status(500).json("Server Side error");
     }
 });
+
+module.exports = router;

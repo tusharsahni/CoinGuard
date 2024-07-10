@@ -5,13 +5,13 @@ const pool = require("../db");
 
 const PORT = process.env.PORT || 3000;
 
-const app = express();
+const router = express.Router();
 
-app.use(cors());
-app.use(morgan("dev"));
-app.use(express.json());
+router.use(cors());
+router.use(morgan("dev"));
+router.use(express.json());
 
-app.post("/namesearch", async (req, res) => {
+router.post("/namesearch", async (req, res) => {
   const { keyword } = req.body;
   if (!keyword) {
     res.status(404).json({ message: "Keyword not found" });
@@ -27,7 +27,7 @@ app.post("/namesearch", async (req, res) => {
   }
 });
 
-app.post("/datesearch", async (req, res) => {
+router.post("/datesearch", async (req, res) => {
   const { fromDate, toDate } = req.body;
   if (!fromDate || !toDate) {
     res.status(404).json({ message: "Dates not found" });
@@ -42,3 +42,5 @@ app.post("/datesearch", async (req, res) => {
     res.status(500).json({ message: "Server side error" });
   }
 });
+
+module.exports = router;
