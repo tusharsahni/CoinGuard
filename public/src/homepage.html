@@ -9,7 +9,7 @@
     <script src="https://kit.fontawesome.com/078e2f97cb.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
 
     <!-- Header -->
     <header class="bg-gray-900 text-white p-4">
@@ -20,121 +20,70 @@
             <div id="navbar"></div>
         </div>
     </header>
-    <main class="container mx-auto p-6">
-         <!-- Progress Tracker -->
-         <section class=" p-6">
-            <div class=" w-1/5">
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex-grow">
+        <!-- Progress Tracker -->
+        <section class="p-6">
+            <div class="w-1/5">
                 <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
                     <div id="progress-bar" class="bg-blue-600 h-4 rounded-full" style="width: 0;"></div>
                 </div>
                 <p class="text-gray-700 text-xs">You have spent <span id="progress-text">0%</span> of your monthly
                     income.</p>
             </div>
-        </section>
 
-
-        <section>
             <!-- Grid for Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 ">
+            <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
                 <div id="openMyModal"
-                    class=" border-dashed border-4 p-4 rounded-lg shadow flex justify-center items-center cursor-pointer">
+                    class="border-dashed border-4 p-4 rounded-lg shadow flex justify-center items-center cursor-pointer">
                     <i class="fa-solid fa-plus text-3xl" style="color: #585d72;"></i>
                 </div>
-
-                <!-- popup form to add budget -->
-
-                <div id="myModalBudget"
-                    class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
-                    <div class="bg-white rounded-lg overflow-hidden shadow-xl w-1/3">
-                        <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
-                            <h2 class="text-lg font-semibold">Add Budget</h2>
-                            <button class="close text-gray-600">&times;</button>
-                        </div>
-                        <form id="popupFormBudget" class="p-4">
-                            <div class="mb-4">
-                                <label for="budgetName" class="block text-gray-700">Budget Name:</label>
-                                <input type="text" id="budgetName" name="budgetName"
-                                    class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required>
-                            </div>
-                            <div class="mb-4">
-                                <label for="budgetAmount" class="block text-gray-700">Amount:</label>
-                                <input type="number" id="budgetAmount" name="budgetAmount"
-                                    class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required>
-                            </div>
-                            <div class="flex justify-end">
-                                <button type="button"
-                                    class="close bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
-                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div id="budgetcard"></div>
             </div>
 
-            <!-- Footer -->
-            <footer class="bg-gray-900 text-white p-4 mt-6 absolute bottom-0 left-0 right-0">
-                <div class="container mx-auto text-center">
-                    &copy; 2024 Coinguard. All rights reserved.
+        </section>
+
+        <!-- Popup form to add budget -->
+        <div id="myModalBudget"
+            class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+            <div class="bg-white rounded-lg overflow-hidden shadow-xl w-1/3">
+                <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
+                    <h2 class="text-lg font-semibold">Add Budget</h2>
+                    <button class="close text-gray-600">&times;</button>
                 </div>
-            </footer>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    // Fetch navbar content
-                    fetch('navbar.html')
-                        .then(response => response.text())
-                        .then(data => {
-                            document.getElementById('navbar').innerHTML = data;
-                        })
-                        .catch(error => {
-                            console.error('Error fetching navbar:', error);
-                        });
-                    fetch('budgetcard.html')
-                        .then(response => response.text())
-                        .then(data => {
-                            document.getElementById('budgetcard').innerHTML = data;
-                        })
-                        .catch(error => {
-                            console.error('Error fetching navbar:', error);
-                        });
-                    // Add event listener to open modal
-                    document.getElementById('openMyModal').addEventListener('click', function () {
-                        document.getElementById('myModalBudget').classList.remove('hidden');
-                    });
+                <form id="popupFormBudget" class="p-4">
+                    <div class="mb-4">
+                        <label for="budgetName" class="block text-gray-700">Budget Name:</label>
+                        <input type="text" id="budgetName" name="budgetName"
+                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="budgetAmount" class="block text-gray-700">Amount:</label>
+                        <input type="number" id="budgetAmount" name="budgetAmount"
+                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="button"
+                            class="close bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-                    // Add event listeners to close buttons
-                    document.querySelectorAll('.close').forEach(el => {
-                        el.addEventListener('click', function () {
-                            document.getElementById('myModalBudget').classList.add('hidden');
-                        });
-                    });
-                });
+    </main>
 
-                // Function to update progress (example function)
-                function updateOverallProgress() {
-                    const monthlyIncome = 4567.89;  // Example income
-                    const monthlyExpenses = 2345.67;  // Example expenses
-                    const progressBar = document.getElementById('progress-bar');
-                    const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
-                    progressBar.style.width = progressPercentage + '%';
-                    document.getElementById('progress-text').innerText = progressPercentage.toFixed(2) + '%';
-                }
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white p-4">
+        <div class="container mx-auto text-center">
+            &copy; 2024 Coinguard. All rights reserved.
+        </div>
+    </footer>
 
-                // Call updateProgress when the page loads
-                window.onload = function () {
-                    updateOverallProgress();
-                };
-                function showDropdown() {
-                    document.getElementById('dropdownContent').classList.remove('hidden');
-                }
-
-                function hideDropdown() {
-                    document.getElementById('dropdownContent').classList.add('hidden');
-                }
-            </script>
+    <!-- JavaScript -->
+    <script src="homepage.js"></script>
 </body>
 
 </html>

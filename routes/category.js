@@ -12,29 +12,66 @@ router.use(morgan("dev"));
 router.use(express.json());
 
 // Retrieve all categories
-router.get("/categories", async (req, res) => {
+// router.post("/categoriesload", async (req, res) => {
+//   const { user_id } = req.body;
+  
+//   if (!user_id) {
+//     return res.status(400).json({ error: "User ID is required" });
+//   }
+
+//   try {
+//     const result = await pool.query(
+//       "SELECT * FROM categories WHERE  user_id = $1",
+//       [user_id]
+//     );
+//     res.json({ data: result.rows });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json("Server side error");
+//   }
+// });
+
+router.post("/categoriesload", async (req, res) => {
+  const { user_id } = req.body;
+  
+  if (!user_id) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
   try {
-    const result = await pool.query("SELECT * FROM categories WHERE show = TRUE");
-    res.json({ data: result.rows });
+    const result = await pool.query(
+      "SELECT category_id, name, amount FROM categories WHERE user_id = $1",
+      [user_id]
+    );
+
+    const categories = result.rows.map(category => ({
+      category_id: category.category_id,
+      name: category.name,
+      amount: category.amount
+    }));
+
+    res.json({ data: categories });
   } catch (error) {
     console.error(error);
     res.status(500).json("Server side error");
   }
 });
 
+
+
 // Create a new category
 router.post("/categories", async (req, res) => {
-  const { user_id, name, amount, month, year } = req.body;
+  const { user_id, name, amount } = req.body;
 
   // Validate input fields
-  if (!user_id || !name || !amount || !month || !year) {
+  if (!user_id || !name || !amount ) {
     return res.status(400).json("All fields required");
   }
 
   try {
     const result = await pool.query(
-      "INSERT INTO categories (user_id, name, amount, month, year) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [user_id, name, amount, month, year]
+      "INSERT INTO categories (user_id, name, amount) VALUES ($1, $2, $3) RETURNING *",
+      [user_id, name, amount]
     );
     res.status(201).json({
       message: "Category Added Successfully",

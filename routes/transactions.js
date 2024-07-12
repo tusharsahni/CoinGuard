@@ -42,7 +42,7 @@ router.post("/transactions", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json("Server Side error");
+    res.status(500).json(error.message);
   }
 });
 

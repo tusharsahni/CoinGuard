@@ -41,7 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     const data = await response.json();
                     console.log("Login successful:", data);
                     localStorage.setItem("token", data.token); // Store token in local storage
-                    window.location.href = "homepage.html"; // Redirect to success page
+                    console.log(data.user_id);
+                   localStorage.setItem("userId", data.user_id);
+                   const userID = data.user_id;
+                    // window.location.href = "homepage.html"; // Redirect to success page
+                //    window.location.href = `homepage.html`;
+                window.location.replace("homepage.html");
                 } else {
                     const errorData = await response.json();
                     console.log("Login failed:", errorData);

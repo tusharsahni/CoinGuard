@@ -194,7 +194,7 @@ router.post("/login", async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign({ id: user.user_id }, SECRET_KEY, { expiresIn: "1h" });
-    res.status(200).json({ token });
+    res.status(200).json({ token, user_id: user.user_id});
   } catch (err) {
     console.log(err);
     res.status(500).json( err.message );
@@ -214,7 +214,7 @@ router.get("/verify", async (req, res) => {
     // const actualToken = token.startsWith('Bearer ') ? token.split(" ")[1] : token;
     
     // Verify token
-    const decoded = jwt.verify(actualToken, SECRET_KEY);
+    const decoded = jwt.verify(token, SECRET_KEY);
 
     // Optionally, you can fetch user details from database based on decoded token
     const query = `
