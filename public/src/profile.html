@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coinguard - Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
     <script src="https://kit.fontawesome.com/078e2f97cb.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <style>
         .profile-pic {
             width: 100px;
@@ -58,18 +60,8 @@
                         <div>
                             <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
                             <p class="display-field">+1 234567890</p>
-                            <div class="flex mt-1 edit-field hidden">
-                                <select id="phone-code" name="phone-code"
-                                    class="block w-1/4 p-2 border border-gray-300 rounded-l-md">
-                                    <option value="+1">+1</option>
-                                    <option value="+44">+44</option>
-                                    <option value="+91">+91</option>
-                                    <option value="+61">+61</option>
-                                    <!-- Add more country codes as needed -->
-                                </select>
-                                <input type="tel" id="phone" name="phone" value="234567890"
-                                    class="block w-3/4 p-2 border border-gray-300 rounded-r-md">
-                            </div>
+                            <input type="tel" id="phone" name="phone" value="+1 234567890"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
                         </div>
                         <div>
                             <label for="income" class="block text-sm font-medium text-gray-700">Budget</label>
@@ -94,12 +86,6 @@
                                 <option>Prefer not to say</option>
                             </select>
                         </div>
-                        <div>
-                            <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
-                            <p class="display-field">Password</p>
-                            <input type="text" id="country" name="country" value="USA"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
-                        </div>
                     </div>
                 </div>
             </div>
@@ -120,6 +106,7 @@
             &copy; 2024 Coinguard. All rights reserved.
         </div>
     </footer>
+
     <script>
         function showDropdown() {
             document.getElementById('dropdownContent').classList.remove('hidden');
@@ -128,14 +115,22 @@
         function hideDropdown() {
             document.getElementById('dropdownContent').classList.add('hidden');
         }
+
         document.addEventListener('DOMContentLoaded', function () {
             Promise.all([
                 fetch('navbar.html').then(response => response.text()),
             ]).then(data => {
                 document.getElementById('navbar').innerHTML = data[0];
+            });
 
+            // Initialize intlTelInput
+            const input = document.querySelector("#phone");
+            window.intlTelInput(input, {
+                initialCountry: "India",
+                separateDialCode: true,
             });
         });
+
         function toggleEdit() {
             const editButton = document.getElementById('edit-button');
             const saveButton = document.getElementById('save-button');
