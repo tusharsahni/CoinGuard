@@ -231,7 +231,7 @@ router.get("/verify", async (req, res) => {
     res.status(200).json(user);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Failed to authenticate token");
+    res.status(500).send(err.message);
   }
 });
 

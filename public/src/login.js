@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = localStorage.getItem("token"); // Retrieve token from local storage
 
     if (token) {
-        fetch("/auth/verify", {
+        fetch("http://localhost:3000/auth/verify", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
 
-            console.log("Submitting login form with", { email, password });
+           // console.log("Submitting login form with", { email, password });
 
             try {
                 const response = await fetch("http://localhost:3000/auth/login", {
