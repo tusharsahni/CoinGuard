@@ -25,7 +25,7 @@ router.get("/transactions", async (req, res) => {
 
 //CREATION
 router.post("/transactions", async (req, res) => {
-  const { name, type, date, category, amount } = req.body;
+  const { name,  date, category, amount } = req.body;
 
   //validate input fields
   if (!name  || !date || !category || !amount) {
