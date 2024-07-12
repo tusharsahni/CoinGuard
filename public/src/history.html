@@ -7,9 +7,13 @@
     <title>History</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/078e2f97cb.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
 </head>
 
-<body class="bg-gray-100  text-gray-800">
+<body class="bg-gray-100 text-gray-800">
     <!-- NAV BAR -->
     <header class="bg-gray-900 text-white p-4">
         <div class="container mx-auto flex justify-between items-center">
@@ -28,8 +32,8 @@
                 <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sort by Amount</button>
             </div>
             <div class="flex space-x-2">
-                <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Export to CSV</button>
-                <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Import from CSV</button>
+                <button id="export-csv" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Export to CSV</button>
+                <button id="export-pdf" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Export to PDF</button>
             </div>
         </div>
 
@@ -44,40 +48,29 @@
                     <input type="hidden" id="transactionId" name="transactionId">
                     <div class="mb-4">
                         <label for="name" class="block text-gray-700">Name:</label>
-                        <input type="text" id="name" name="name"
-                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
+                        <input type="text" id="name" name="name" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                     </div>
                     <div class="mb-4">
                         <label for="type" class="block text-gray-700">Type:</label>
-                        <select id="type" name="type"
-                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
+                        <select id="type" name="type" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                             <option value="true">Income</option>
                             <option value="false">Expense</option>
                         </select>
                     </div>
                     <div class="mb-4">
                         <label for="date" class="block text-gray-700">Date:</label>
-                        <input type="date" id="date" name="date"
-                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
+                        <input type="date" id="date" name="date" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                     </div>
                     <div class="mb-4">
                         <label for="amount" class="block text-gray-700">Amount:</label>
-                        <input type="number" id="amount" name="amount"
-                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
+                        <input type="number" id="amount" name="amount" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                     </div>
                     <div class="mb-4">
                         <label for="category" class="block text-gray-700">Category:</label>
-                        <input type="text" id="category" name="category"
-                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required>
+                        <input type="text" id="category" name="category" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                     </div>
                     <div class="flex justify-end">
-                        <button type="button"
-                            class="close bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                        <button type="button" class="close bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
                     </div>
                 </form>
@@ -98,7 +91,7 @@
                             <th scope="col" class="px-6 py-3">Action</th>
                         </tr>
                     </thead>
-                    <tbody id="data" class = "text-gray-800" >
+                    <tbody id="data" class="text-gray-800">
                         <!-- data is about to be entered here. -->
                     </tbody>
                 </table>
@@ -112,9 +105,9 @@
                 fetch('navbar.html').then(response => response.text()),
             ]).then(data => {
                 document.getElementById('navbar').innerHTML = data[0];
-
             });
         });
+
         function updateProgress() {
             const monthlyIncome = 10000;
             const monthlyExpenses = 2345.67;
@@ -266,6 +259,42 @@
                 });
             });
 
+            // Add event listeners for export buttons
+            document.getElementById('export-csv').addEventListener('click', exportTableToCSV);
+            document.getElementById('export-pdf').addEventListener('click', exportTableToPDF);
+
+            function exportTableToCSV() {
+                var table = document.getElementById('dataTable');
+                var rows = Array.from(table.querySelectorAll('tr'));
+                var csvContent = rows.map(row => {
+                    var cells = Array.from(row.querySelectorAll('th, td'));
+                    return cells.map(cell => cell.innerText).join(',');
+                }).join('\n');
+
+                var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                saveAs(blob, 'table-data.csv');
+            }
+
+            async function exportTableToPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const table = document.getElementById('dataTable');
+                const rows = Array.from(table.querySelectorAll('tr'));
+            
+                // Prepare the data for autoTable
+                const head = [Array.from(rows[0].querySelectorAll('th')).map(th => th.innerText)];
+                const body = rows.slice(1).map(row => Array.from(row.querySelectorAll('td')).map(td => td.innerText));
+            
+                // Add autoTable to the PDF document
+                doc.autoTable({
+                    head: head,
+                    body: body,
+                });
+            
+                // Save the PDF
+                doc.save('table-data.pdf');
+            }
+            
             fetchData();
         });
     </script>
