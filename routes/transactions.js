@@ -28,13 +28,13 @@ router.post("/transactions", async (req, res) => {
   const { name, type, date, category, amount } = req.body;
 
   //validate input fields
-  if (!name || typeof type !== "boolean" || !date || !category || !amount) {
+  if (!name  || !date || !category || !amount) {
     return res.status(400).json("All fields required");
   }
   try {
     const result = await pool.query(
-      "INSERT INTO transactions (name, type, date, category, amount) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [name, type, date, category, amount]
+      "INSERT INTO transactions (name,  date, category, amount) VALUES ($1,  $2, $3, $4) RETURNING *",
+      [name,  date, category, amount]
     );
     res.status(201).json({
       message: "Transaction Added Successfully",
@@ -49,13 +49,12 @@ router.post("/transactions", async (req, res) => {
 //UPDATION
 router.put("/transactions", async (req, res) => {
   
-  const { name, type, date, category, amount ,id} = req.body;
+  const { name,  date, category, amount ,id} = req.body;
 
   //validate input fields
   if (
     !id ||
     !name ||
-    typeof type !== "boolean" ||
     !date ||
     !category ||
     !amount
@@ -63,8 +62,8 @@ router.put("/transactions", async (req, res) => {
     return res.status(400).json("All fields required");
   }
   const result = await pool.query(
-    "UPDATE transactions SET name = $1, type = $2, date = $3, category = $4, amount = $5 WHERE id = $6 RETURNING *",
-    [name, type, date, category, amount, id]
+    "UPDATE transactions SET name = $1,  date = $2, category = $3, amount = $4 WHERE id = $5 RETURNING *",
+    [name,  date, category, amount, id]
   );
   res.status(201).json({
     message: "Transaction updated successfully",
