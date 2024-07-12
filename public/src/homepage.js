@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const card = document.createElement('div');
                 const budget_id = budget.category_id;
                 const detailUrl = `budget.html?userID=${user_id}&budgetID=${budget_id}`
-                showCard(budget.name,detailUrl,budget_id);
+                showCard(budget.name,detailUrl,budget.amount);
             });
         } catch (error) {
             console.error('Error fetching budget data:', error);
