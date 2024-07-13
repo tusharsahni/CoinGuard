@@ -6,38 +6,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-
-    
-    function showDropdown() {
-        document.getElementById('dropdownContent').classList.remove('hidden');
-    }
-    
-    function hideDropdown() {
-        document.getElementById('dropdownContent').classList.add('hidden');
-    }
-    
-   
-   
+  
 
     const user_id = localStorage.getItem('userId');
     console.log('User ID retrieved from URL:', user_id);
-
-    
-
-    
-
-    // // Fetch navbar content
-    // fetch('navbar.html')
-    //     .then(response => response.text())
-    //     .then(data => {
-    //         document.getElementById('navbar').innerHTML = data;
-    //     })
-    //     .catch(error => {
-    //         console.error('Error fetching navbar:', error);
-    //     });
-
-
-       
+     
 
     // Async function to handle modal opening
     async function openModal() {
@@ -107,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const card = document.createElement('div');
                 const budget_id = budget.category_id;
                 const detailUrl = `budget.html?userID=${user_id}&budgetID=${budget_id}`
-                showCard(budget.name,detailUrl,budget_id);
+                showCard(budget.name,detailUrl,budget.amount);
             });
         } catch (error) {
             console.error('Error fetching budget data:', error);
@@ -128,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
                             <div class="bg-blue-600 h-4 rounded-full" style="width: 50%;"></div>
                         </div>
-                        <span class="ml-2 text-gray-700">Amount: $${budgetAmount}</span>
+                        <span class="ml-2 text-gray-700">Amount: ₹${budgetAmount}</span>
                     </div>
                 </div>
             </a>

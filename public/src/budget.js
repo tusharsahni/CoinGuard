@@ -107,13 +107,13 @@ window.onload = function () {
     updateProgress();
 };
 
-function showDropdown() {
-    document.getElementById('dropdownContent').classList.remove('hidden');
-}
+// function showDropdown() {
+//     document.getElementById('dropdownContent').classList.remove('hidden');
+// }
 
-function hideDropdown() {
-    document.getElementById('dropdownContent').classList.add('hidden');
-}
+// function hideDropdown() {
+//     document.getElementById('dropdownContent').classList.add('hidden');
+// }
 
 document.getElementById('openModalBtn').addEventListener('click', function () {
     document.getElementById('myModal').classList.remove('hidden');
