@@ -19,11 +19,14 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 // Retrieve userID from URL query parameter
-const user_id = getParameterByName('userID');
-console.log('User ID retrieved from URL:', user_id);
+// const user_id = getParameterByName('userID');
 
-const budgetID = getParameterByName('budgetID');
-console.log("Budget id: ", budgetID);
+const budgetID = localStorage.getItem("budgetId");
+// const budgetID = getParameterByName('budgetID');
+
+// console.log("Budget id: ", budgetID);
+const user_id = localStorage.getItem('userId')
+console.log('User ID retrieved from URL:', user_id);
 
 
 // Function to update the progress bar
@@ -107,13 +110,7 @@ window.onload = function () {
     updateProgress();
 };
 
-// function showDropdown() {
-//     document.getElementById('dropdownContent').classList.remove('hidden');
-// }
 
-// function hideDropdown() {
-//     document.getElementById('dropdownContent').classList.add('hidden');
-// }
 
 document.getElementById('openModalBtn').addEventListener('click', function () {
     document.getElementById('myModal').classList.remove('hidden');

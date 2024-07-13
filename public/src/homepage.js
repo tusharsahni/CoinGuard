@@ -76,38 +76,72 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             const result = await response.json();
             const data = result.data;
+
+
+
+          
+            // console.log("budgetId:", budgetId)
+            // localStorage.setItem("budgetId", budgetId);
+
+
+
+
             data.forEach(budget => {
                 const card = document.createElement('div');
-                const budget_id = budget.category_id;
-                const detailUrl = `budget.html?userID=${user_id}&budgetID=${budget_id}`
-                showCard(budget.name,detailUrl,budget.amount);
+                const budgetId = budget.category_id;
+                console.log("budget ID:", budgetId);
+                const Url = `budget.html`
+                showCard(budget.name,Url,budget.amount,budgetId);
             });
         } catch (error) {
             console.error('Error fetching budget data:', error);
         }
     }
 
-
-    function showCard(budgetName, detailUrl, budgetAmount) {
+    function showCard(budgetName, Url, budgetAmount, budgetId) {
         const cardContainer = document.getElementById('cards-container');
-    
         const card = document.createElement('div');
         card.className = 'bg-gray-50 p-4 rounded-lg shadow';
-        card.innerHTML = `
-            <a href="${detailUrl}" >
-                <h3 class="text-lg font-semibold text-gray-700">${budgetName}</h3>
-                <div class="mt-2">
-                    <div class="flex items-center">
-                        <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
-                            <div class="bg-blue-600 h-4 rounded-full" style="width: 50%;"></div>
-                        </div>
-                        <span class="ml-2 text-gray-700">Amount: ₹${budgetAmount}</span>
+    
+        // Create anchor element
+        const anchor = document.createElement('a');
+        anchor.href = Url;
+    
+        // Attach click event listener to store budgetId
+        anchor.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default action of following the link
+            storeBudgetId(budgetId);
+            // Optionally, navigate to the URL after storing budgetId
+            window.location.href = anchor.href;
+        });
+    
+        // Construct card HTML
+        anchor.innerHTML = `
+            <h3 class="text-lg font-semibold text-gray-700">${budgetName}</h3>
+            <div class="mt-2">
+                <div class="flex items-center">
+                    <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                        <div class="bg-blue-600 h-4 rounded-full" style="width: 50%;"></div>
                     </div>
+                    <span class="ml-2 text-gray-700">Amount: ₹${budgetAmount}</span>
                 </div>
-            </a>
+            </div>
         `;
     
+        // Append anchor to card and card to container
+        card.appendChild(anchor);
         cardContainer.appendChild(card);
     }
+
+    function storeBudgetId(budgetId) {
+        localStorage.setItem('budgetId', budgetId);
+        
+        
+    }
+    
+    
+    // Function to store budgetId in localStorage
+  
+    
     loadBudgetCards();
 });
