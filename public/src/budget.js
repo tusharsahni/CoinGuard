@@ -29,15 +29,64 @@ const user_id = localStorage.getItem('userId')
 console.log('User ID retrieved from URL:', user_id);
 
 
-// Function to update the progress bar
-function updateProgress() {
-    const monthlyIncome = 10000;
-    const monthlyExpenses = 2345.67;
-    const progressBar = document.getElementById('progress-bar');
-    const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
-    progressBar.style.width = progressPercentage + '%';
-    document.getElementById('progress-text').innerText = progressPercentage.toFixed(2) + '%';
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    const progressChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Spent', 'Remaining'],
+            datasets: [{
+                data: [0, 100],
+                backgroundColor: ['#4caf50', '#e0e0e0'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            cutout: '80%',
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: false
+                }
+            },
+            animation: {
+                duration: 1000,
+                easing: 'easeInOutQuad'
+            },
+            // Adjust the chart size
+            aspectRatio: 1.5, // Ensures the chart maintains a 1:1 aspect ratio
+            layout: {
+                padding: 10 // Adds padding around the chart
+            }
+        }
+    });
+
+    function updateProgress() {
+        const monthlyIncome = 10000;
+        const monthlyExpenses = 2345.67;
+        const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
+
+        progressChart.data.datasets[0].data = [progressPercentage, 100 - progressPercentage];
+        
+        if (progressPercentage < 50) {
+            progressChart.data.datasets[0].backgroundColor = ['#4caf50', '#e0e0e0'];
+        } else if (progressPercentage < 75) {
+            progressChart.data.datasets[0].backgroundColor = ['#ffeb3b', '#e0e0e0'];
+        } else {
+            progressChart.data.datasets[0].backgroundColor = ['#f44336', '#e0e0e0'];
+        }
+        
+        progressChart.update('active');
+        document.getElementById('progress-text').innerText = progressPercentage.toFixed(2) + '%';
+    }
+
+    updateProgress();
+});
+
+
 
 // Function to initialize the pie chart
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -149,15 +198,15 @@ document.addEventListener("DOMContentLoaded", () => {
             row.setAttribute("data-id", transaction.id); // Set a data attribute for the transaction ID
 
             row.innerHTML = `
-        <td>${transaction.name}</td>
-        <td>${transaction.date}</td>
-        <td>${transaction.category}</td>
-        <td>${transaction.amount}</td>
-        <td>
-            <button onclick="editTransaction('${transaction.id}')"><u>Edit</u></button>
-            <button onclick="deleteTransaction('${transaction.id}')"><u>Delete</u></button>
-        </td>
-    `;
+            <td class="px-6 py-3">${transaction.name}</td>
+            <td class="px-6 py-3">${transaction.date}</td>
+            <td class="px-6 py-3">${parseFloat(transaction.amount).toFixed(2)}</td> <!-- Format amount -->
+            <td class="px-6 py-3">${transaction.category}</td>
+            <td class="px-6 py-3">
+                <button onclick="editTransaction('${transaction.id}')" class="text-blue-500 hover:underline"><u>Edit</u></button>
+                <button onclick="deleteTransaction('${transaction.id}')" class="text-red-500 hover:underline"><u>Delete</u></button>
+            </td>
+        `;
 
             data.appendChild(row);
         });
@@ -239,4 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     fetchData();
 });
+
+
 

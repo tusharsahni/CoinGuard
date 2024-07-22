@@ -19,6 +19,20 @@
             max-width: 550px;
             max-height: 500px;
         }
+
+        .large-button {
+            padding: 14px 24px; 
+            font-size: 20px; 
+        }
+
+        .table-row {
+            font-size: 14px; 
+            padding: 8px; 
+        }
+        #progressChart {
+            transition: all 1s ease-in-out;
+        }
+        
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -38,19 +52,20 @@
     <!-- Main Content -->
     <main class="container mx-auto p-6">
         <!-- Heading -->
-        <section class="bg-white p-6 rounded-t-lg shadow-md">
-            <h1 class="text-center text-4xl">Budget Name</h1>
+        <section class="bg-white p-6 rounded-t-lg shadow-md text-center">
+            <button id="openModalBtn"
+                class="large-button px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Add
+                Transaction</button>
         </section>
         <!-- Progress Tracker -->
-        <section class="bg-white p-6 shadow-md">
-            <div class=" w-1/5">
-                <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
-                    <div id="progress-bar" class="bg-blue-600 h-4 rounded-full" style="width: 0;"></div>
-                </div>
-                <p class="text-gray-700 text-xs">You have spent <span id="progress-text">0%</span> of your monthly
-                    income.</p>
-            </div>
-        </section>
+    <section class=" p-6 absolute right-0 top-0 mt-20 mr-6">
+        <div class="flex justify-end items-center">
+            <canvas id="progressChart" width="150" height="150"></canvas>
+        </div>
+        <p class="text-gray-700 text-xs text-center mt-2 font-semibold">You have spent <span id="progress-text">0%</span> of your budget.</p>
+    </section>
+
+
         <!-- Pie Chart Section -->
         <section class="bg-white p-6 shadow-md">
             <h2 class="text-xl font-semibold">Expense Distribution</h2>
@@ -89,12 +104,7 @@
             </div>
             <hr class="opacity-40 mt-6">
         </section>
-        <!-- Add Transaction Button -->
-        <section class="bg-white pt-3 pl-6 shadow-md">
-            <button id="openModalBtn"
-                class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Add
-                Transaction</button>
-        </section>
+        <!-- Add Transaction Button (Moved to Heading Section) -->
         <section>
             <!-- The Modal -->
             <div id="myModal" class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
@@ -120,9 +130,15 @@
                         </div>
                         <div class="mb-4">
                             <label for="category" class="block text-gray-700">Category:</label>
-                            <input type="text" id="category" name="category"
+                            <select id="category" name="category"
                                 class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required>
+                                <option value="Rent">Rent</option>
+                                <option value="Groceries">Groceries</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Misc">Misc</option>
+                            </select>
                         </div>
                         <div class="mb-4">
                             <label for="amount" class="block text-gray-700">Amount:</label>
