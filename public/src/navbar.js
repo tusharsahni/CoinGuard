@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("this is profileNavItem: ",profileNavItem)
 
     if (profileNavItem && loginSignupNavItem) {
+        
         if (token) {
             console.log("Token present:", token);
             // Show the profileNavItem and hide the loginSignupNavItem

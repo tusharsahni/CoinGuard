@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation</title>
+    <!-- Add your CSS and other head elements here -->
+</head>
+
+<body>
+    <nav>
+        <ul class="flex space-x-4">
+            <li><a href="./homepage.html" class="text-gray-300 hover:text-white">Dashboard</a></li>
+            <li><a href="./history.html" class="text-gray-300 hover:text-white">History</a></li>
+            <li class="relative group" onmouseover="showDropdown()" id="AA">
+                <div class="hover:text-gray-400">
+                    <a href="#" class="hover:font-bold"><i
+                            class="fa-solid fa-user text-gray-300 hover:text-white"></i></a>
+                    <div id="dropdownContent"
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 z-10 hidden divide-y divide-gray-100 rounded-lg shadow w-44 bg-black text-white"
+                        onmouseout="hideDropdown()">
+                        <!-- User Details -->
+                        <div class="py-2">
+                            <a href="#"
+                                class="block px-4 py-2 text-sm hover:bg-gray-400 dark:hover:bg-black dark:text-gray-200 dark:hover:text-white">
+                                Name
+                                <br>
+                                7494899798
+                            </a>
+                        </div>
+                        <!-- User details Ended -->
+                        <!-- option -->
+                        <ul class="py-2 text-sm dark:text-gray-200" aria-labelledby="dropdownDividerButton">
+                            <li>
+                                <a href="./profile.html"
+                                    class="block px-4 py-2 hover:bg-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">Account</a>
+                            </li>
+                        </ul>
+                        <!-- option ends -->
+                        <div class="py-2" onclick="logout()">
+                            <a href="#"
+                                class="block px-4 py-2 text-sm hover:bg-gray-400 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li id="BB"><a href="./login.html" class="text-gray-300 hover:text-white">Login/Signup</a></li>
+        </ul>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const profileNavItem = document.getElementById('AA');
+            const loginSignupNavItem = document.getElementById('BB');
+
+            console.log("This is profileNavItem: ", profileNavItem);
+
+            if (token) {
+                console.log('Token exists:', token);
+                // Hide the login/signup item and show the profile item
+                if (loginSignupNavItem) {
+                    loginSignupNavItem.style.display = 'none';
+                }
+                if (profileNavItem) {
+                    profileNavItem.style.display = 'block';
+                }
+            } else {
+                console.log('Token does not exist');
+                // Show the login/signup item and hide the profile item
+                if (loginSignupNavItem) {
+                    loginSignupNavItem.style.display = 'block';
+                }
+                if (profileNavItem) {
+                    profileNavItem.style.display = 'none';
+                }
+            }
+        });
+
+        function showDropdown() {
+            const dropdownContent = document.getElementById('dropdownContent');
+            if (dropdownContent) {
+                dropdownContent.classList.remove('hidden');
+            }
+        }
+
+        function hideDropdown() {
+            const dropdownContent = document.getElementById('dropdownContent');
+            if (dropdownContent) {
+                dropdownContent.classList.add('hidden');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = './login.html';
+        }
+    </script>
+</body>
+
+</html>
