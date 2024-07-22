@@ -58,3 +58,80 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 });
+
+
+document.getElementById('openModalBtn').addEventListener('click', function () {
+    document.getElementById('myModal').classList.remove('hidden');
+});
+
+document.querySelectorAll('.close').forEach(el => {
+    el.addEventListener('click', function () {
+        document.getElementById('myModal').classList.add('hidden');
+    });
+});
+
+
+// Fetch countries and populate the dropdown
+fetch('https://restcountries.com/v3.1/all')
+.then(response => response.json())
+.then(data => {
+    const countryDropdown = document.getElementById('country');
+    const countryCodeDropdown = document.getElementById('country-code');
+
+    // Sort countries alphabetically
+    data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+
+    data.forEach(country => {
+        // Add countries to the country dropdown
+        const countryOption = document.createElement('option');
+        countryOption.value = country.name.common;
+        countryOption.textContent = country.name.common;
+        countryDropdown.appendChild(countryOption);
+
+        // Add country codes to the country code dropdown
+        if (country.idd.root && country.idd.suffixes) {
+            country.idd.suffixes.forEach(suffix => {
+                const codeOption = document.createElement('option');
+                codeOption.value = `${country.idd.root}${suffix}`;
+                codeOption.textContent = `${country.name.common} (${country.idd.root}${suffix})`;
+                countryCodeDropdown.appendChild(codeOption);
+            });
+        }
+    });
+})
+.catch(error => console.error('Error fetching countries:', error));
+
+document.addEventListener('DOMContentLoaded', () => {
+    const selects = document.querySelectorAll('select');
+
+    selects.forEach(select => {
+        select.addEventListener('change', (event) => {
+            const target = event.target;
+            const placeholder = target.querySelector('option[disabled]');
+
+            if (target.value === "") {
+                placeholder.classList.add('text-gray-400');
+                target.classList.add('text-gray-400');
+                target.classList.remove('text-gray-700');
+            } else {
+                placeholder.classList.remove('text-gray-400');
+                target.classList.add('text-gray-700');
+                target.classList.remove('text-gray-400');
+            }
+        });
+
+        // Initialize color based on the current value
+        const target = select;
+        const placeholder = target.querySelector('option[disabled]');
+        
+        if (target.value === "") {
+            placeholder.classList.add('text-gray-400');
+            target.classList.add('text-gray-400');
+            target.classList.remove('text-gray-700');
+        } else {
+            placeholder.classList.remove('text-gray-400');
+            target.classList.add('text-gray-700');
+            target.classList.remove('text-gray-400');
+        }
+    });
+});
