@@ -11,10 +11,12 @@ router.use(morgan("dev"));
 router.use(express.json());
 
 //RETRIEVAL
-router.get("/account", async (req, res) => {
+router.post("/account", async (req, res) => {
+   
+   const {user_id} = req.body;
     try {
   
-      const result = await pool.query("SELECT * FROM user_details");
+      const result = await pool.query("SELECT * FROM user_details WHERE user_id = $1", [user_id]);
       res.json({ data: result.rows });
     } catch (error) {
       console.log(error);
@@ -22,11 +24,25 @@ router.get("/account", async (req, res) => {
     }
   });
 
+router.post("/accountEmail", async (req, res) => {
+   
+   const {user_id} = req.body;
+    try {
+  
+      const result = await pool.query("SELECT * FROM users WHERE user_id = $1", [user_id]);
+      res.json({ data: result.rows });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
+    }
+  });
+
+  
 
 // UPDATE
 router.put("/account", async (req, res) => {
     
-    const {user_id , name, contact, country, gender} = req.body;
+    const {user_id , name, contact, country, gender,email} = req.body;
 
     // Validate input fields
     if (!name || !contact || !country || !gender) {
@@ -34,22 +50,31 @@ router.put("/account", async (req, res) => {
     }
 
     try {
-        const result = await pool.query(
+        const User_detail_table = await pool.query(
             "UPDATE user_details SET name = $1, contact = $2, country = $3, gender = $4 WHERE user_id = $5 RETURNING *",
             [name, contact, country, gender, user_id]
         );
-
-        if (result.rows.length === 0) {
+ 
+        if (User_detail_table.rows.length === 0) {
             return res.status(404).json("User not found");
         }
 
+
+        const User_email = await pool.query("UPDATE users SET email = $1  WHERE user_id = $2 RETURNING *", [email,user_id]) ;
+
+        if (User_email.rows.length === 0) {
+          return res.status(404).json("User not found");
+      }
+
+
         res.status(200).json({
             message: "User details updated successfully",
-            data: result.rows[0],
+            data: User_detail_table.rows[0],
+            data: User_email.rows[0],
         });
     } catch (error) {
         console.log(error);
-        res.status(500).json("Server Side error");
+        res.status(500).json(error.message);
     }
 });
 

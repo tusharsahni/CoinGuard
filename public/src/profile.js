@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     Promise.all([
         fetch('navbar.html').then(response => response.text()),
     ]).then(data => {
@@ -11,21 +11,108 @@ document.addEventListener('DOMContentLoaded', function () {
         initialCountry: "India",
         separateDialCode: true,
     });
+
+    await fetchUserInfo();
 });
 
+async function fetchUserInfo() {
+    try {
+        const response = await fetch("http://localhost:3000/account/account", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user_id }),
+        });
+
+        const result = await response.json();
+        const data = result.data[0];
+
+        const emailResponse = await fetch("http://localhost:3000/account/accountEmail", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user_id }),
+        });
+
+        const emailData = await emailResponse.json();
+        const email = emailData.data[0];
+
+        document.getElementById('nameShown').textContent = data.name;
+        document.getElementById('contactShown').textContent = data.contact;
+        document.getElementById('genderShown').textContent = data.gender;
+        document.getElementById('countryShown').textContent = data.country;
+        document.getElementById('emailShown').textContent = email.email;
+    } catch (err) {
+        console.error('Error:', err);
+    }
+}
+
+async function saveProfile() {
+    const profileData = {
+        user_id: user_id,
+        name: document.getElementById('name').value,
+        country: document.getElementById('country').value,
+        gender: document.getElementById('gender').value,
+        email: document.getElementById('email').value,
+        contact: document.getElementById('phone').value
+    };
+
+    try {
+        const response = await fetch('http://localhost:3000/account/account', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(profileData)
+        });
+
+        if (response.ok) {
+            document.getElementById('nameShown').textContent = profileData.name;
+            document.getElementById('countryShown').textContent = profileData.country;
+            document.getElementById('genderShown').textContent = profileData.gender;
+            document.getElementById('emailShown').textContent = profileData.email;
+            document.getElementById('contactShown').textContent = profileData.contact;
+
+            alert('Profile updated successfully!');
+            toggleEdit();
+        } else {
+            const errorData = await response.json();
+            alert('Failed to update profile: ' + errorData.message);
+        }
+    } catch (error) {
+        alert('Failed to update profile: ' + error.message);
+    }
+}
+
 function toggleEdit() {
-    const editButton = document.getElementById('edit-button');
-    const saveButton = document.getElementById('save-button');
-    const cancelButton = document.getElementById('cancel-button');
     const displayFields = document.querySelectorAll('.display-field');
     const editFields = document.querySelectorAll('.edit-field');
 
-    displayFields.forEach(field => field.classList.toggle('hidden'));
-    editFields.forEach(field => field.classList.toggle('hidden'));
-    editButton.classList.toggle('hidden');
-    saveButton.classList.toggle('hidden');
-    cancelButton.classList.toggle('hidden');
+    if (document.getElementById('edit-button').classList.contains('hidden')) {
+        displayFields.forEach(el => el.classList.toggle('hidden'));
+        editFields.forEach(el => el.classList.toggle('hidden'));
+        document.getElementById('edit-button').classList.toggle('hidden');
+        document.getElementById('save-button').classList.toggle('hidden');
+        document.getElementById('cancel-button').classList.toggle('hidden');
+    } else {
+        document.getElementById('name').value = document.getElementById('nameShown').textContent;
+        document.getElementById('country').value = document.getElementById('countryShown').textContent;
+        document.getElementById('gender').value = document.getElementById('genderShown').textContent;
+        document.getElementById('email').value = document.getElementById('emailShown').textContent;
+        document.getElementById('phone').value = document.getElementById('contactShown').textContent;
+
+        displayFields.forEach(el => el.classList.toggle('hidden'));
+        editFields.forEach(el => el.classList.toggle('hidden'));
+        document.getElementById('edit-button').classList.toggle('hidden');
+        document.getElementById('save-button').classList.toggle('hidden');
+        document.getElementById('cancel-button').classList.toggle('hidden');
+    }
 }
+
+const user_id = localStorage.getItem('userId');
+console.log('User ID retrieved from URL:', user_id);
 
 function cancelEdit() {
     toggleEdit();

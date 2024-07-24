@@ -47,37 +47,21 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                            <p class="display-field">John Doe</p>
+                            <p class="display-field" id="nameShown">N/A</p>
                             <input type="text" id="name" name="name" value="John Doe"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
                         </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <p class="display-field">john.doe@example.com</p>
-                            <input type="email" id="email" name="email" value="john.doe@example.com"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
-                        </div>
-                        <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                            <p class="display-field">+1 234567890</p>
-                            <input type="tel" id="phone" name="phone" value="+1 234567890"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
-                        </div>
-                        <div>
-                            <label for="income" class="block text-sm font-medium text-gray-700">Budget</label>
-                            <p class="display-field">$4567.89</p>
-                            <input type="number" id="income" name="income" value="4567.89"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
-                        </div>
+
                         <div>
                             <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
-                            <p class="display-field">USA</p>
-                            <input type="text" id="country" name="country" value="USA"
+                            <p class="display-field" id="countryShown">N/A</p>
+                            <input type="text" id="country" name="country" value="John Doe"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
                         </div>
+
                         <div>
                             <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-                            <p class="display-field">Male</p>
+                            <p class="display-field" id="genderShown">N/A</p>
                             <select id="gender" name="gender"
                                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
                                 <option>Male</option>
@@ -86,6 +70,21 @@
                                 <option>Prefer not to say</option>
                             </select>
                         </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <p class="display-field" id="emailShown">N/A</p>
+                            <input type="text" id="email" name="email" value="John Doe"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                        </div>
+
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                            <p class="display-field" id="contactShown"></p>
+                            <input type="tel" id="phone" name="phone" value="+91 234567890"
+                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -93,7 +92,7 @@
                 <button id="edit-button" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
                     onclick="toggleEdit()">Edit</button>
                 <button id="save-button" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 hidden"
-                    onclick="toggleEdit()">Save</button>
+                    onclick="saveProfile()">Save</button>
                 <button id="cancel-button" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 hidden"
                     onclick="cancelEdit()">Cancel</button>
             </div>
