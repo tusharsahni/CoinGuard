@@ -42,17 +42,17 @@ router.post("/accountEmail", async (req, res) => {
 // UPDATE
 router.put("/account", async (req, res) => {
     
-    const {user_id , name, contact, country, gender,email} = req.body;
+    const {user_id , name, contact, country, gender,email,budget} = req.body;
 
     // Validate input fields
-    if (!name || !contact || !country || !gender) {
+    if (!name || !contact || !country || !gender || !budget) {
         return res.status(400).json("All fields required");
     }
 
     try {
         const User_detail_table = await pool.query(
-            "UPDATE user_details SET name = $1, contact = $2, country = $3, gender = $4 WHERE user_id = $5 RETURNING *",
-            [name, contact, country, gender, user_id]
+            "UPDATE user_details SET name = $1, contact = $2, country = $3, gender = $4 , budget = $5 WHERE user_id = $6 RETURNING *",
+            [name, contact, country, gender, budget, user_id]
         );
  
         if (User_detail_table.rows.length === 0) {
