@@ -73,11 +73,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const data = await response.json();
-    //console.log(data.response2);
     const monthlyIncome = data.response2[0].budget;
     const monthlyExpenses = data.response1[0].total_amount;
-    console.log("Monthly Income:", monthlyIncome);
-    console.log("Monthly Expenses:", monthlyExpenses);
     const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
 
     progressChart.data.datasets[0].data = [
@@ -85,13 +82,26 @@ document.addEventListener("DOMContentLoaded", () => {
       100 - progressPercentage,
     ];
 
-    if (progressPercentage < 50) {
-      progressChart.data.datasets[0].backgroundColor = ["#4caf50", "#e0e0e0"];
-    } else if (progressPercentage < 75) {
-      progressChart.data.datasets[0].backgroundColor = ["#ffeb3b", "#e0e0e0"];
-    } else {
-      progressChart.data.datasets[0].backgroundColor = ["#f44336", "#e0e0e0"];
+    function getGradientColor(percentage) {
+      if (percentage < 50) {
+        // Green to Yellow transition
+        const hue = 120 - (percentage * 120) / 50;
+        return `hsl(${hue}, 100%, 50%)`;
+      } else if (percentage < 75) {
+        // Yellow to Red transition
+        const hue = 60 - ((percentage - 50) * 60) / 25;
+        return `hsl(${hue}, 100%, 50%)`;
+      } else {
+        // Red color
+        return `hsl(0, 100%, 50%)`;
+      }
     }
+
+    const gradientColor = getGradientColor(progressPercentage);
+    progressChart.data.datasets[0].backgroundColor = [
+      gradientColor,
+      "#e0e0e0",
+    ];
 
     progressChart.update("active");
     document.getElementById("progress-text").innerText =
@@ -274,6 +284,7 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error("Network response was not ok");
       }
       const transactions = await response.json();
+      console.log(transactions.data);
       displayTransactions(transactions.data);
     } catch (error) {
       errorMessage.textContent = "Server side error";

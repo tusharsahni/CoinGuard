@@ -28,12 +28,14 @@
         <h2 class="text-4xl font-semibold mb-4">My Transactions</h2>
         <div class="flex justify-between items-center mb-4">
             <div class="flex space-x-2">
-                <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sort by Date</button>
-                <button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sort by Amount</button>
+                <button id = "sortDate" onclick = "sortDate()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sort by Date</button>
+                <button id = "sortCategory" onclick = "sortCategory()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sort by Category</button>
             </div>
             <div class="flex space-x-2">
-                <button id="export-csv" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Export to CSV</button>
-                <button id="export-pdf" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Export to PDF</button>
+                <button id="export-csv" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Export to
+                    CSV</button>
+                <button id="export-pdf" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Export to
+                    PDF</button>
             </div>
         </div>
 
@@ -48,29 +50,40 @@
                     <input type="hidden" id="transactionId" name="transactionId">
                     <div class="mb-4">
                         <label for="name" class="block text-gray-700">Name:</label>
-                        <input type="text" id="name" name="name" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="text" id="name" name="name"
+                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
                     </div>
                     <div class="mb-4">
                         <label for="type" class="block text-gray-700">Type:</label>
-                        <select id="type" name="type" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <select id="type" name="type"
+                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
                             <option value="true">Income</option>
                             <option value="false">Expense</option>
                         </select>
                     </div>
                     <div class="mb-4">
                         <label for="date" class="block text-gray-700">Date:</label>
-                        <input type="date" id="date" name="date" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="date" id="date" name="date"
+                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
                     </div>
                     <div class="mb-4">
                         <label for="amount" class="block text-gray-700">Amount:</label>
-                        <input type="number" id="amount" name="amount" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="number" id="amount" name="amount"
+                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
                     </div>
                     <div class="mb-4">
                         <label for="category" class="block text-gray-700">Category:</label>
-                        <input type="text" id="category" name="category" class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        <input type="text" id="category" name="category"
+                            class="w-full border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required>
                     </div>
                     <div class="flex justify-end">
-                        <button type="button" class="close bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                        <button type="button"
+                            class="close bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
                         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
                     </div>
                 </form>
@@ -80,18 +93,30 @@
         <section class="bg-white p-6 rounded-b-lg shadow-md">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <table id="dataTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <thead class="text-xs  uppercase  bg-gray-700 text-gray-400">
                         <tr>
-                            
-                            <th scope="col" class="px-6 py-3">Name</th>
-                            <th scope="col" class="px-6 py-3">Date</th>
-                            <th scope="col" class="px-6 py-3">Amount</th>
-                            <th scope="col" class="px-6 py-3">Category</th>
-                            <th scope="col" class="px-6 py-3">Action</th>
+
+                            <th scope="col" class="px-6 py-3">
+                                Name
+                            </th>
+
+                            <th scope="col" class="px-6 py-3">
+                                Date
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Amount
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Category
+                            </th>
+                           
                         </tr>
                     </thead>
-                    <tbody id="data" class="text-gray-800">
-                        <!-- data is about to be entered here. -->
+                    <tbody id="data">
+                        <!-- data will be entered here. -->
+
+
+
                     </tbody>
                 </table>
             </div>
@@ -101,7 +126,7 @@
 
     <script src="history.js"></script>
     <script src="navbar.js"></script>
-   
+
 </body>
 
 </html>

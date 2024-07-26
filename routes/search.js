@@ -11,15 +11,15 @@ router.use(cors());
 router.use(morgan("dev"));
 router.use(express.json());
 
-router.post("/namesearch", async (req, res) => {
-  const { keyword } = req.body;
-  if (!keyword) {
+router.post("/categorysearch", async (req, res) => {
+  const { userid } = req.body;
+  if (!userid) {
     res.status(404).json({ message: "Keyword not found" });
   }
   try {
     const response = await pool.query(
-      "SELECT * FROM transactions WHERE category = $1 AND show = TRUE",
-      [keyword]
+      "SELECT * FROM transactions WHERE userid = $1 GROUP BY category",
+      [userid]
     );
     res.status(200).json({ data: response.rows });
   } catch (err) {

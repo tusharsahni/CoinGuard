@@ -16,7 +16,21 @@ router.post("/getTransactions", async (req, res) => {
   try {
     const { userid } = req.body;
     const result = await pool.query(
-      "SELECT * FROM transactions WHERE userid = $1",
+      "SELECT id, name, category, amount, userid, TO_CHAR(date, 'DD-MM-YYYY') as date FROM transactions WHERE userid = $1 ORDER BY date DESC LIMIT 10",
+      [userid]
+    );
+    res.json({ data: result.rows });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+});
+
+router.post("/getHistory", async (req, res) => {
+  try {
+    const { userid } = req.body;
+    const result = await pool.query(
+      "SELECT id, name, category, amount, userid, TO_CHAR(date, 'DD-MM-YYYY') as date FROM transactions WHERE userid = $1 ORDER BY date DESC",
       [userid]
     );
     res.json({ data: result.rows });
