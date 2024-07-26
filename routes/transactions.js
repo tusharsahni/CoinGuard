@@ -14,7 +14,6 @@ router.use(express.json());
 //RETRIEVAL
 router.get("/transactions", async (req, res) => {
   try {
-
     const result = await pool.query("SELECT * FROM transactions");
     res.json({ data: result.rows });
   } catch (error) {
@@ -25,16 +24,16 @@ router.get("/transactions", async (req, res) => {
 
 //CREATION
 router.post("/transactions", async (req, res) => {
-  const { name,  date, category, amount } = req.body;
+  const { name, date, category, amount, userid } = req.body;
 
   //validate input fields
-  if (!name  || !date || !category || !amount) {
+  if (!name || !date || !category || !amount || !userid) {
     return res.status(400).json("All fields required");
   }
   try {
     const result = await pool.query(
-      "INSERT INTO transactions (name,  date, category, amount) VALUES ($1,  $2, $3, $4) RETURNING *",
-      [name,  date, category, amount]
+      "INSERT INTO transactions (name,  date, category, amount,userid) VALUES ($1,  $2, $3, $4, $5) RETURNING *",
+      [name, date, category, amount, userid]
     );
     res.status(201).json({
       message: "Transaction Added Successfully",
@@ -48,22 +47,15 @@ router.post("/transactions", async (req, res) => {
 
 //UPDATION
 router.put("/transactions", async (req, res) => {
-  
-  const { name,  date, category, amount ,id} = req.body;
+  const { name, date, category, amount, userid } = req.body;
 
   //validate input fields
-  if (
-    !id ||
-    !name ||
-    !date ||
-    !category ||
-    !amount
-  ) {
+  if (!userid || !name || !date || !category || !amount) {
     return res.status(400).json("All fields required");
   }
   const result = await pool.query(
     "UPDATE transactions SET name = $1,  date = $2, category = $3, amount = $4 WHERE id = $5 RETURNING *",
-    [name,  date, category, amount, id]
+    [name, date, category, amount, userid]
   );
   res.status(201).json({
     message: "Transaction updated successfully",

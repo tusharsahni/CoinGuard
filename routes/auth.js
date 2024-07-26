@@ -129,7 +129,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 // REGISTER ENDPOINT
 router.post("/register", async (req, res) => {
-  const { email, password, name, contact, country, gender } = req.body;
+  const { email, name,gender,password, country ,contact } = req.body;
 
   try {
     // Hash password

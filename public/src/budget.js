@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = await response.json();
     //console.log(data.response2);
     const monthlyIncome = data.response2[0].budget;
-    const monthlyExpenses = 2900;
+    const monthlyExpenses = data.response1[0].total_amount;
     console.log("Monthly Income:", monthlyIncome);
     console.log("Monthly Expenses:", monthlyExpenses);
     const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
@@ -292,8 +292,11 @@ document.addEventListener("DOMContentLoaded", () => {
   popupForm.addEventListener("submit", async (event) => {
     event.preventDefault(); // Prevent the form from submitting normally
     const formData = new FormData(popupForm);
+    const userid = 2;
+    if (userid) {
+      formData.append("userid", userid);
+    }
     const transactionData = Object.fromEntries(formData);
-
     try {
       let response;
       if (isEditing) {
