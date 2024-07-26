@@ -184,10 +184,11 @@ async function fetchChartData() {
         responsive: true,
         plugins: {
           legend: {
+            display: false,
             position: "right",
           },
           title: {
-            display: true,
+            display: false,
             text: "Expense Distribution",
           },
         },
