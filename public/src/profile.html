@@ -36,62 +36,61 @@
 
     <!-- Main Content -->
     <main class="container mx-auto p-6">
-        <section class="bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-xl font-semibold mb-4">Profile</h2>
-            <div class="flex flex-col md:flex-row md:space-x-6">
-                <div class="flex-shrink-0 mb-4 md:mb-0">
-                    <img src="https://via.placeholder.com/100" alt="Profile Picture" class="profile-pic display-field">
-                    <input type="file" class="mt-2 edit-field hidden">
-                </div>
+        <section class="bg-white p-6 rounded-xl shadow-md">
+            <h2 class="text-5xl font-bold mb-4">Profile</h2>
+            <div class="flex flex-col md:flex-row md:space-x-8">
                 <div class="flex-grow">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                            <p class="display-field" id="nameShown">N/A</p>
-                            <input type="text" id="name" name="name" value="John Doe"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                            <label for="name" class="block text-xl font-bold mb-2 text-gray-700">Name</label>
+                            <p class="border border-gray-300 rounded-md p-3 w-full display-field space-x-4"
+                                id="nameShown">N/A</p>
+                            <input type="text" id="name" name="name" value="N/A"
+                                class="mt-1 block w-full p-3 border border-gray-300 rounded-md edit-field hidden">
                         </div>
 
                         <div>
-                            <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
-                            <p class="display-field" id="countryShown">N/A</p>
-                            <input type="text" id="country" name="country" value="John Doe"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                            <label for="country" class="block text-xl font-bold mb-2 text-gray-700">Country</label>
+                            <p class="border border-gray-300 rounded-md p-3 w-full display-field" id="countryShown">N/A
+                            </p>
+                            <input type="text" id="country" name="country" value="N/A"
+                                class="mt-1 block w-full p-3 border border-gray-300 rounded-md edit-field hidden">
                         </div>
 
                         <div>
-                            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-                            <p class="display-field" id="genderShown">N/A</p>
+                            <label for="gender" class="block text-xl font-bold mb-2 text-gray-700">Gender</label>
+                            <p class="border border-gray-300 rounded-md p-3 w-full display-field" id="genderShown">N/A
+                            </p>
                             <select id="gender" name="gender"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                                class="mt-1 block w-full p-3 border border-gray-300 rounded-md edit-field hidden">
                                 <option>Male</option>
                                 <option>Female</option>
                                 <option>Other</option>
                                 <option>Prefer not to say</option>
                             </select>
                         </div>
+
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <p class="display-field" id="emailShown">N/A</p>
-                            <input type="text" id="email" name="email" value="John Doe"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                            <label for="email" class="block text-xl font-bold mb-2 text-gray-700">Email</label>
+                            <p class="border border-gray-300 rounded-md p-3 w-full display-field" id="emailShown">N/A
+                            </p>
+                            <input type="email" id="email" name="email" value="N/A"
+                                class="mt-1 block w-full p-3 border border-gray-300 rounded-md edit-field hidden">
                         </div>
 
                         <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                            <p class="display-field" id="contactShown"></p>
-                            <input type="tel" id="phone" name="phone" value="+91 234567890"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                            <label for="phone" class="block text-xl font-bold mb-2 text-gray-700">Phone</label>
+                            <p class="border border-gray-300 rounded-md p-3 w-full display-field" id="contactShown"></p>
+                            <input type="tel" id="phone" name="phone" value="N/A"
+                                class="mt-1 block w-full p-3 border border-gray-300 rounded-md edit-field hidden">
                         </div>
 
-
                         <div>
-                            <label for="budget" class="block text-sm font-medium text-gray-700">Budget</label>
-                            <p class="display-field" id="budgetShown"></p>
+                            <label for="budget" class="block text-xl font-bold mb-2 text-gray-700">Budget</label>
+                            <p class="border border-gray-300 rounded-md p-3 w-full display-field" id="budgetShown"></p>
                             <input type="number" id="budget" name="budget"
-                                class="mt-1 block w-full p-2 border border-gray-300 rounded-md edit-field hidden">
+                                class="mt-1 block w-full p-3 border border-gray-300 rounded-md edit-field hidden">
                         </div>
-
                     </div>
                 </div>
             </div>
