@@ -6,11 +6,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   );
 
   // Initialize intlTelInput
-  const input = document.querySelector("#phone");
-  window.intlTelInput(input, {
-    initialCountry: "India",
-    separateDialCode: true,
-  });
+  // const input = document.querySelector("#phone");
+  // window.intlTelInput(input, {
+  //   initialCountry: "India",
+  //   separateDialCode: true,
+  // });
 
   await fetchUserInfo();
 });
