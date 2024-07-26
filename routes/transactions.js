@@ -12,9 +12,13 @@ router.use(morgan("dev"));
 router.use(express.json());
 
 //RETRIEVAL
-router.get("/transactions", async (req, res) => {
+router.post("/getTransactions", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM transactions");
+    const { userid } = req.body;
+    const result = await pool.query(
+      "SELECT * FROM transactions WHERE userid = $1",
+      [userid]
+    );
     res.json({ data: result.rows });
   } catch (error) {
     console.log(error);

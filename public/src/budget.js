@@ -151,11 +151,11 @@ async function fetchChartData() {
           {
             data: chartData,
             backgroundColor: [
-              "rgba(255, 99, 132, 0.5)",
-              "rgba(54, 162, 235, 0.5)",
-              "rgba(255, 206, 86, 0.5)",
-              "rgba(75, 192, 192, 0.5)",
-              "rgba(153, 102, 255, 0.5)",
+              "rgba(239, 68, 68, 1)",
+              "rgba(59, 130, 246, 1)",
+              "rgba(234, 179, 8, 1)",
+              "rgba(34, 197, 94, 1)",
+              "rgba(139, 92, 246, 1)",
             ],
             borderColor: [
               "rgba(255, 99, 132, 1)",
@@ -248,8 +248,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const fetchData = async () => {
     try {
+      const userid = 2;
       const response = await fetch(
-        `http://localhost:3000/transactions/transactions`
+        `http://localhost:3000/transactions/getTransactions`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userid }),
+        }
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
