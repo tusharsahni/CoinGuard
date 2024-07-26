@@ -294,12 +294,12 @@ document.addEventListener("DOMContentLoaded", () => {
             )}</td> <!-- Format amount -->
             <td class="px-6 py-3">${transaction.category}</td>
             <td class="px-6 py-3">
-                <button onclick="editTransaction('${
+                <button class="small-button px-3 py-1 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75" onclick="editTransaction('${
                   transaction.id
-                }')" class="text-blue-500 hover:underline"><u>Edit</u></button>
-                <button onclick="deleteTransaction('${
+                }')" class="text-white hover:underline">Edit</button>
+                <button class="small-button px-3 py-1 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75" onclick="deleteTransaction('${
                   transaction.id
-                }')" class="text-red-500 hover:underline"><u>Delete</u></button>
+                }')" class="text-red-500 hover:underline">Delete</button>
             </td>
         `;
 
@@ -339,6 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const responseData = await response.json();
+      location.reload();
       alert(responseData.message);
       popupForm.reset();
       fetchData();
@@ -365,6 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!response.ok) {
         errorMessage.textContent = responseData.error;
       }
+      location.reload();
       alert(responseData.message);
       fetchData();
     } catch (error) {
@@ -395,3 +397,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetchData();
 });
+
+// to set today's date by default
+function setDefaultDate() {
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById('date').value = today;
+}
+
+window.onload = setDefaultDate;
