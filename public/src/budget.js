@@ -126,7 +126,6 @@ function getParameterByName(name, url) {
 }
 
 async function fetchChartData() {
-  //const user_id = localStorage.getItem("userId");
   const userid = 2;
   try {
     const response = await fetch(`http://localhost:3000/charts/piecharts`, {
@@ -138,32 +137,45 @@ async function fetchChartData() {
     });
 
     const data = await response.json();
-    //console.log(data);
-    const labels = data.data.map((item) => item.category);
-    const chartData = data.data.map((item) => item.total_amount);
+    
+    // Static labels and their colors
+    const staticLabels = ["Rent", "Utilities", "Miscellaneous", "Groceries", "Entertainment"];
+    const backgroundColors = [
+      "rgba(239, 68, 68, 1)", // Rent
+      "rgba(59, 130, 246, 1)", // Utilities
+      "rgba(234, 179, 8, 1)", // Miscellaneous
+      "rgba(34, 197, 94, 1)", // Groceries
+      "rgba(139, 92, 246, 1)" // Entertainment
+    ];
+    const borderColors = [
+      "rgba(255, 99, 132, 1)", // Rent
+      "rgba(54, 162, 235, 1)", // Utilities
+      "rgba(255, 206, 86, 1)", // Miscellaneous
+      "rgba(75, 192, 192, 1)", // Groceries
+      "rgba(153, 102, 255, 1)" // Entertainment
+    ];
+
+    // Initialize chartData with zeros
+    const chartData = new Array(staticLabels.length).fill(0);
+
+    // Map API data to static labels
+    data.data.forEach(item => {
+      const index = staticLabels.indexOf(item.category);
+      if (index !== -1) {
+        chartData[index] = item.total_amount;
+      }
+    });
 
     const ctx = document.getElementById("expenseChart").getContext("2d");
     const expenseChart = new Chart(ctx, {
       type: "pie",
       data: {
-        labels: labels,
+        labels: staticLabels,
         datasets: [
           {
             data: chartData,
-            backgroundColor: [
-              "rgba(239, 68, 68, 1)",
-              "rgba(59, 130, 246, 1)",
-              "rgba(234, 179, 8, 1)",
-              "rgba(34, 197, 94, 1)",
-              "rgba(139, 92, 246, 1)",
-            ],
-            borderColor: [
-              "rgba(255, 99, 132, 1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-            ],
+            backgroundColor: backgroundColors,
+            borderColor: borderColors,
             borderWidth: 1,
           },
         ],
@@ -172,10 +184,10 @@ async function fetchChartData() {
         responsive: true,
         plugins: {
           legend: {
-            position: "none",
+            position: "right",
           },
           title: {
-            display: false,
+            display: true,
             text: "Expense Distribution",
           },
         },
