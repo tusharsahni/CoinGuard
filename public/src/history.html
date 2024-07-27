@@ -11,6 +11,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.13/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <style>
+        .dropdown-content {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 text-gray-800">
@@ -32,17 +45,63 @@
                 <button id = "sortCategory" onclick = "sortCategory()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sort by Category</button>
             </div> -->
             <div class="relative z-40">
-                <button id="filterCategory" class=" bg-opacity-90 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:bg-blue-600">
+                <button id="filterCategory"
+                    class=" bg-opacity-90 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:bg-blue-600">
                     Filter by Category
                 </button>
-                <div id="categoryDropdown" onmouseover="showDropdown2()" class="absolute hidden mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
-                    <a href="#" onclick="showCategory('All')"  class="block px-4 py-2 text-gray-700 hover:bg-gray-100">All</a>
-                    <a href="#" onclick="showCategory('Rent')" onmouseout="hideDropdown2()" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Rent</a>
-                    <a href="#" onclick="showCategory('Groceries')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Groceries</a>
-                    <a href="#" onclick="showCategory('Utilities')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Utilities</a>
-                    <a href="#" onclick="showCategory('Entertainment')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Entertainment</a>
-                    <a href="#" onclick="showCategory('Miscellanous')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Miscellanous</a>
+                <!-- <input type="text" id="startDate" placeholder="Start Date" class="border px-4 py-2 rounded">
+                <input type="text" id="endDate" placeholder="End Date" class="border px-4 py-2 rounded">
+                <button id="filterCategory"
+                    class="bg-opacity-90 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:bg-blue-600">
+                    Filter by Date
+                </button> -->
+                <div id="categoryDropdown" onmouseover="showDropdown2()"
+                    class="absolute hidden mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
+                    <a href="#" onclick="showCategory('All')"
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100">All</a>
+                    <a href="#" onclick="showCategory('Rent')" onmouseout="hideDropdown2()"
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Rent</a>
+                    <a href="#" onclick="showCategory('Groceries')"
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Groceries</a>
+                    <a href="#" onclick="showCategory('Utilities')"
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Utilities</a>
+                    <a href="#" onclick="showCategory('Entertainment')"
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Entertainment</a>
+                    <a href="#" onclick="showCategory('Miscellanous')"
+                        class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Miscellanous</a>
                 </div>
+
+
+
+                <div class="relative inline-block text-left">
+                    <button id="filterDate"
+                        class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:bg-blue-600">
+                        Filter by Date
+                    </button>
+                    <div id="dropdown-content"
+                        class="dropdown-content absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-2">
+                        <div class="px-4 py-2">
+                            <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                            <input type="date" id="startDate"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-2 py-1">
+                        </div>
+                        <div class="px-4 py-2">
+                            <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+                            <input type="date" id="endDate"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm px-2 py-1">
+                        </div>
+                        <div class="px-4 py-2">
+                            <button id="applyFilter"
+                                class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 focus:bg-blue-600">
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
             </div>
             <div class="flex space-x-2">
                 <button id="export-csv" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Export to
@@ -122,7 +181,7 @@
                             <th scope="col" class="px-6 py-3">
                                 Category
                             </th>
-                           
+
                         </tr>
                     </thead>
                     <tbody class="text-gray-700" id="data">
