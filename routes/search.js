@@ -12,15 +12,19 @@ router.use(morgan("dev"));
 router.use(express.json());
 
 router.post("/categorysearch", async (req, res) => {
-  const { userid } = req.body;
-  if (!userid) {
-    res.status(404).json({ message: "Keyword not found" });
+  const { userid ,category} = req.body;
+  if (!userid || !category) {
+    res.status(404).json({ message: "Invalid input" });
   }
   try {
     const response = await pool.query(
-      "SELECT * FROM transactions WHERE userid = $1 GROUP BY category",
-      [userid]
+      "SELECT * FROM transactions WHERE userid = $1 AND category= $2 ",
+      [userid,category]
     );
+    console.log('Hello')
+    if(!response){
+      res.status(404).json({message:"No data found"})
+    }
     res.status(200).json({ data: response.rows });
   } catch (err) {
     res.status(500).json({ message: "Server side error" });

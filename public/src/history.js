@@ -341,3 +341,81 @@ const sortDate = async () => {
     errorMessage.textContent = "Server side error";
   }
 };
+
+document.getElementById('filterCategory').addEventListener('click', function () {
+  document.getElementById('categoryDropdown').classList.toggle('hidden');
+});
+
+function showDropdown2(dropdownId) {
+  const dropdown = document.getElementById(dropdownId);
+  if (dropdown) {
+      dropdown.style.display = 'block';
+  }
+}
+
+// Function to hide the dropdown
+function hideDropdown2(dropdownId) {
+  const dropdown = document.getElementById(dropdownId);
+  if (dropdown) {
+      dropdown.style.display = 'none';
+  }
+}
+
+
+document.addEventListener('click', function (event) {
+  var categoryDropdown = document.getElementById('categoryDropdown');
+  // var dateDropdown = document.getElementById('dateDropdown');
+  if (!categoryDropdown.contains(event.target) && !document.getElementById('filterCategory').contains(event.target)) {
+      categoryDropdown.classList.add('hidden');
+  }
+  
+  // if (!dateDropdown.contains(event.target) && !document.getElementById('filterDate').contains(event.target)) {
+  //     dateDropdown.classList.add('hidden');
+  // }
+
+  
+});
+
+
+async function showCategory(category) {
+  const errorMessage = document.getElementById("errorMessage");
+  try{
+    const userid = 2;
+    if(category==='All'){
+      location.reload();
+    }
+    const response = await fetch(
+      `http://localhost:3000/search/categorysearch`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userid, category }),
+      }
+    );
+    const transaction = await response.json();
+    console.log(transaction);
+    const displayTransactions = (transactions) => {
+      data.innerHTML = "";
+      transactions.forEach((transaction) => {
+        const row = document.createElement("tr");
+        row.setAttribute("data-id", transaction.id); // Set a data attribute for the transaction ID
+  
+        row.innerHTML = `
+                    <td class="px-6 py-3">${transaction.name}</td>
+                    <td class="px-6 py-3">${transaction.date}</td>
+                    <td class="px-6 py-3">${parseFloat(
+                      transaction.amount
+                    ).toFixed(2)}</td> <!-- Format amount -->
+                    <td class="px-6 py-3">${transaction.category}</td>
+                `;
+  
+        data.appendChild(row);
+      });
+    };
+    displayTransactions(transaction.data);
+    hideDropdown2();
+  }catch(error){
+    console.error(error);
+    errorMessage.textContent = error.message;
+  }
+}

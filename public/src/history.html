@@ -17,7 +17,7 @@
     <!-- NAV BAR -->
     <header class="bg-gray-900 text-white p-4">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="./homepage.html">
+            <a href="./budget.html">
                 <h1 class="text-2xl font-bold">Coinguard</h1>
             </a>
             <div id="navbar"></div>
@@ -27,9 +27,22 @@
     <div class="container mx-auto mt-12 bg-white p-5 rounded-md">
         <h2 class="text-4xl font-semibold mb-4">My Transactions</h2>
         <div class="flex justify-between items-center mb-4">
-            <div class="flex space-x-2">
+            <!-- <div class="flex space-x-2">
                 <button id = "sortDate" onclick = "sortDate()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sort by Date</button>
                 <button id = "sortCategory" onclick = "sortCategory()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Sort by Category</button>
+            </div> -->
+            <div class="relative z-40">
+                <button id="filterCategory" class=" bg-opacity-90 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:bg-blue-600">
+                    Filter by Category
+                </button>
+                <div id="categoryDropdown" class="absolute hidden mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
+                    <a href="#" onclick="showCategory('All')"  class="block px-4 py-2 text-gray-700 hover:bg-gray-100">All</a>
+                    <a href="#" onclick="showCategory('Rent')"  class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Rent</a>
+                    <a href="#" onclick="showCategory('Groceries')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Groceries</a>
+                    <a href="#" onclick="showCategory('Utilities')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Utilities</a>
+                    <a href="#" onclick="showCategory('Entertainment')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Entertainment</a>
+                    <a href="#" onclick="showCategory('Miscellanous')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Miscellanous</a>
+                </div>
             </div>
             <div class="flex space-x-2">
                 <button id="export-csv" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Export to
@@ -41,7 +54,7 @@
 
         <!-- The Modal -->
         <div id="myModal" class="z-50 fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
-            <div class="bg-white rounded-lg overflow-hidden shadow-xl w-1/3">
+            <div class="bg-white rounded-lg overflow-hidden  w-1/3">
                 <div class="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
                     <h2 class="text-lg font-semibold">Add Entry</h2>
                     <button class="close text-gray-600">&times;</button>
@@ -90,9 +103,9 @@
             </div>
         </div>
 
-        <section class="bg-white p-6 rounded-b-lg shadow-md">
+        <section class="bg-white p-6 rounded-b-lg ">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table id="dataTable" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table id="dataTable" class=" w-full text-sm text-left rtl:text-right text-gray-600 dark:text-gray-400">
                     <thead class="text-xs  uppercase  bg-gray-700 text-gray-400">
                         <tr>
 
@@ -112,7 +125,7 @@
                            
                         </tr>
                     </thead>
-                    <tbody id="data">
+                    <tbody class="text-gray-700" id="data">
                         <!-- data will be entered here. -->
 
 

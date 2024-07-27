@@ -18,13 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (token) {
             console.log("Token present:", token);
             // Show the profileNavItem and hide the loginSignupNavItem
-            profileNavItem.style.display = 'block';
-            loginSignupNavItem.style.display = 'none';
+            if (loginSignupNavItem) {
+                loginSignupNavItem.style.display = 'none';
+            }
+            if (profileNavItem) {
+                profileNavItem.style.display = 'block';
+            }
         } else {
             console.log("Token not present");
             // Show the loginSignupNavItem and hide the profileNavItem
-            profileNavItem.style.display = 'none';
-            loginSignupNavItem.style.display = 'block';
+            if (loginSignupNavItem) {
+                loginSignupNavItem.style.display = 'block';
+            }
+            if (profileNavItem) {
+                profileNavItem.style.display = 'none';
+            }
         }
     } else {
         console.error("ProfileNavItem or LoginSignupNavItem not found.");
