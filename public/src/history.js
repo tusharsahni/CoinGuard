@@ -346,16 +346,16 @@ document.getElementById('filterCategory').addEventListener('click', function () 
   document.getElementById('categoryDropdown').classList.toggle('hidden');
 });
 
-function showDropdown2(dropdownId) {
-  const dropdown = document.getElementById(dropdownId);
+function showDropdown2(categoryDropdown) {
+  const dropdown = document.getElementById(categoryDropdown);
   if (dropdown) {
       dropdown.style.display = 'block';
   }
 }
 
 // Function to hide the dropdown
-function hideDropdown2(dropdownId) {
-  const dropdown = document.getElementById(dropdownId);
+function hideDropdown2(categoryDropdown) {
+  const dropdown = document.getElementById(categoryDropdown);
   if (dropdown) {
       dropdown.style.display = 'none';
   }

@@ -35,9 +35,9 @@
                 <button id="filterCategory" class=" bg-opacity-90 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:bg-blue-600">
                     Filter by Category
                 </button>
-                <div id="categoryDropdown" class="absolute hidden mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
+                <div id="categoryDropdown" onmouseover="showDropdown2()" class="absolute hidden mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg">
                     <a href="#" onclick="showCategory('All')"  class="block px-4 py-2 text-gray-700 hover:bg-gray-100">All</a>
-                    <a href="#" onclick="showCategory('Rent')"  class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Rent</a>
+                    <a href="#" onclick="showCategory('Rent')" onmouseout="hideDropdown2()" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Rent</a>
                     <a href="#" onclick="showCategory('Groceries')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Groceries</a>
                     <a href="#" onclick="showCategory('Utilities')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Utilities</a>
                     <a href="#" onclick="showCategory('Entertainment')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Entertainment</a>
