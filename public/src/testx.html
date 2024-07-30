@@ -49,53 +49,8 @@
         </ul>
     </nav>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('token');
-            const profileNavItem = document.getElementById('AA');
-            const loginSignupNavItem = document.getElementById('BB');
+    <script src="testx.js">
 
-            console.log("This is profileNavItem: ", profileNavItem);
-
-            if (token) {
-                console.log('Token exists:', token);
-                // Hide the login/signup item and show the profile item
-                if (loginSignupNavItem) {
-                    loginSignupNavItem.style.display = 'none';
-                }
-                if (profileNavItem) {
-                    profileNavItem.style.display = 'block';
-                }
-            } else {
-                console.log('Token does not exist');
-                // Show the login/signup item and hide the profile item
-                if (loginSignupNavItem) {
-                    loginSignupNavItem.style.display = 'block';
-                }
-                if (profileNavItem) {
-                    profileNavItem.style.display = 'none';
-                }
-            }
-        });
-
-        function showDropdown() {
-            const dropdownContent = document.getElementById('dropdownContent');
-            if (dropdownContent) {
-                dropdownContent.classList.remove('hidden');
-            }
-        }
-
-        function hideDropdown() {
-            const dropdownContent = document.getElementById('dropdownContent');
-            if (dropdownContent) {
-                dropdownContent.classList.add('hidden');
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('token');
-            window.location.href = './login.html';
-        }
     </script>
 </body>
 

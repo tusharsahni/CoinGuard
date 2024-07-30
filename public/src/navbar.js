@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
    fetchUserData();
 
 
-    console.log("this is profileNavItem: ", profileNavItem)
+    console.log("this is profileNavItem: ", profileNavItem);
 
     if (profileNavItem && loginSignupNavItem) {
 
