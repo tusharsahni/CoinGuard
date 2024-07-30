@@ -53,8 +53,9 @@ function hideDropdown() {
 }
 
 function logout() {
-  localStorage.removeItem("token");
-  window.location.href = "./login.html";
+  // localStorage.removeItem("token");
+  localStorage.clear();
+  window.location.replace = "./login.html";
 }
 
 function initializeNavListeners() {
