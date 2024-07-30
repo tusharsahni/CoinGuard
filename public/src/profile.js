@@ -4,20 +4,14 @@ document.addEventListener("DOMContentLoaded", async function () {
       document.getElementById("navbar").innerHTML = data[0];
     }
   );
-
-  // Initialize intlTelInput
-  // const input = document.querySelector("#phone");
-  // window.intlTelInput(input, {
-  //   initialCountry: "India",
-  //   separateDialCode: true,
-  // });
-
   await fetchUserInfo();
 });
-
+const userid = localStorage.getItem("userId");
 async function fetchUserInfo() {
-  const user_id = 2;
+  //const user_id = 2;
   try {
+    const user_id = userid;
+    console.log("userid from profile page", userid);
     const response = await fetch("http://localhost:3000/account/account", {
       method: "POST",
       headers: {
@@ -27,21 +21,9 @@ async function fetchUserInfo() {
     });
 
     const result = await response.json();
+    console.log("result", result);
     const data = result.data[0];
-
-    const emailResponse = await fetch(
-      "http://localhost:3000/account/accountEmail",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_id }),
-      }
-    );
-
-    const emailData = await emailResponse.json();
-    const email = emailData.data[0];
+    const email = result.email[0];
 
     document.getElementById("nameShown").textContent = data.name;
     document.getElementById("contactShown").textContent = data.contact;
@@ -55,9 +37,9 @@ async function fetchUserInfo() {
 }
 
 async function saveProfile() {
-  const user_id = 2;
+  //const user_id = 2;
   const profileData = {
-    user_id: user_id,
+    user_id: userid,
     name: document.getElementById("name").value,
     country: document.getElementById("country").value,
     gender: document.getElementById("gender").value,

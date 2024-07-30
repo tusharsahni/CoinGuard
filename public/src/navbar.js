@@ -1,89 +1,98 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const token = localStorage.getItem('token');
-    const profileNavItem = document.getElementById('AA');
-    const loginSignupNavItem = document.getElementById('BB');
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("navbar.html")
+    .then((response) => response.text())
+    .then((data) => {
+      document.getElementById("navbar").innerHTML = data;
+      initializeNavListeners();
+      fetchUserData();
+      const token = localStorage.getItem("token");
+      const profileNavItem = document.getElementById("profilenavitem");
+      const loginSignupNavItem = document.getElementById("loginsignupnavitem");
 
+      console.log("This is profileNavItem: ", profileNavItem);
 
-   
-   // console.log('User ID retrieved from URL:', user_id);
-
-   
-   fetchUserData();
-
-
-    console.log("this is profileNavItem: ", profileNavItem);
-
-    if (profileNavItem && loginSignupNavItem) {
-
-        if (token) {
-            console.log("Token present:", token);
-            // Show the profileNavItem and hide the loginSignupNavItem
-            if (loginSignupNavItem) {
-                loginSignupNavItem.style.display = 'none';
-            }
-            if (profileNavItem) {
-                profileNavItem.style.display = 'block';
-            }
-        } else {
-            console.log("Token not present");
-            // Show the loginSignupNavItem and hide the profileNavItem
-            if (loginSignupNavItem) {
-                loginSignupNavItem.style.display = 'block';
-            }
-            if (profileNavItem) {
-                profileNavItem.style.display = 'none';
-            }
+      if (token) {
+        console.log("Token exists:", token);
+        // Hide the login/signup item and show the profile item
+        if (loginSignupNavItem) {
+          loginSignupNavItem.style.display = "none";
         }
-    } else {
-        console.error("ProfileNavItem or LoginSignupNavItem not found.");
-    }
-
+        if (profileNavItem) {
+          profileNavItem.style.display = "block";
+        }
+      } else {
+        console.log("Token does not exist");
+        // Show the login/signup item and hide the profile item
+        if (loginSignupNavItem) {
+          loginSignupNavItem.style.display = "block";
+        }
+        if (profileNavItem) {
+          profileNavItem.style.display = "none";
+        }
+      }
+    })
+    .catch((error) => console.error("Error loading navbar:", error));
 });
-
-
-async function fetchUserData() {
-
-    const user_id = localStorage.getItem('userId');
-    try{
-
-        const response = await fetch("http://localhost:3000/account/account", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ user_id }),
-        });
-
-        const result = await response.json();
-        const data = result.data[0];
-
-        console.log("User name for navbar: " + data.name);
-
-//document.getElementById('UserDetail').textContent= data.name;
-        document.getElementById('UserDetail').innerHTML = `${data.name}<br>${data.contact}`;
-    }catch (error){
-
-    }
-}
-
+let hideDropdownTimeout;
 function showDropdown() {
-    const dropdownContent = document.getElementById('dropdownContent');
-    if (dropdownContent) {
-        dropdownContent.style.display = 'block';
-    }
+  clearTimeout(hideDropdownTimeout);
+  const dropdownContent = document.getElementById("dropdownContent");
+  if (dropdownContent) {
+    dropdownContent.classList.remove("hidden");
+  }
 }
 
 function hideDropdown() {
-    const dropdownContent = document.getElementById('dropdownContent');
+  hideDropdownTimeout = setTimeout(() => {
+    const dropdownContent = document.getElementById("dropdownContent");
+
     if (dropdownContent) {
-        dropdownContent.style.display = 'none';
+      dropdownContent.classList.add("hidden");
     }
+  }, 200);
 }
 
-// Function to clear JWT token from localStorage
 function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-    // Redirect to login page or update UI as needed
-    window.location.replace("login.html");// Example redirect to login page
+  localStorage.removeItem("token");
+  window.location.href = "./login.html";
+}
+
+function initializeNavListeners() {
+  const profileNavItem = document.getElementById("profilenavitem");
+  const dropdownContent = document.getElementById("dropdownContent");
+  if (profileNavItem) {
+    profileNavItem.addEventListener("mouseenter", showDropdown);
+    profileNavItem.addEventListener("mouseleave", hideDropdown);
+  }
+  if (dropdownContent) {
+    dropdownContent.addEventListener("mouseenter", showDropdown);
+    dropdownContent.addEventListener("mouseleave", hideDropdown);
+  }
+}
+
+async function fetchUserData() {
+  const user_id = localStorage.getItem("userId");
+  try {
+    console.log(user_id);
+    const response = await fetch("http://localhost:3000/account/account", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_id }),
+    });
+
+    const result = await response.json();
+    const data = result.data[0];
+
+    console.log("User name for navbar: " + data.name);
+    console.log("User contact for navbar: " + data.contact);
+
+    //document.getElementById('UserDetail').textContent= data.name;
+    document.getElementById(
+      "UserDetail"
+    ).innerHTML = `${data.name}<br>${data.contact}`;
+  } catch (error) {
+    console.log(error);
+  }
 }

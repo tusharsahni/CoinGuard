@@ -22,8 +22,9 @@ const budgetID = localStorage.getItem("budgetId");
 // const budgetID = getParameterByName('budgetID');
 
 // console.log("Budget id: ", budgetID);
-const user_id = localStorage.getItem("userId");
-console.log("User ID retrieved from URL:", user_id);
+const userid = localStorage.getItem("userId");
+
+//console.log("User ID retrieved from URL:", user_id);
 
 document.addEventListener("DOMContentLoaded", () => {
   const ctx = document.getElementById("progressChart").getContext("2d");
@@ -63,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   async function updateProgress() {
-    const userid = 2;
+    //const userid = 2;
     const response = await fetch(`http://localhost:3000/charts/progress`, {
       method: "POST",
       headers: {
@@ -75,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = await response.json();
     const monthlyIncome = data.response2[0].budget;
     const monthlyExpenses = data.response1[0].total_amount;
+    console.log(monthlyIncome, monthlyExpenses);
     const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
 
     progressChart.data.datasets[0].data = [
@@ -98,10 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const gradientColor = getGradientColor(progressPercentage);
-    progressChart.data.datasets[0].backgroundColor = [
-      gradientColor,
-      "#e0e0e0",
-    ];
+    progressChart.data.datasets[0].backgroundColor = [gradientColor, "#e0e0e0"];
 
     progressChart.update("active");
     document.getElementById("progress-text").innerText =
@@ -120,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
   const budgetID = localStorage.getItem("budgetId");
-  const user_id = localStorage.getItem("userId");
-  console.log("User ID retrieved from URL:", user_id);
+  //const user_id = localStorage.getItem("userId");
+  //console.log("User ID retrieved from URL:", user_id);
   fetchChartData();
 });
 
@@ -136,7 +135,7 @@ function getParameterByName(name, url) {
 }
 
 async function fetchChartData() {
-  const userid = 2;
+  //const userid = 2;
   try {
     const response = await fetch(`http://localhost:3000/charts/piecharts`, {
       method: "POST",
@@ -147,29 +146,35 @@ async function fetchChartData() {
     });
 
     const data = await response.json();
-    
+
     // Static labels and their colors
-    const staticLabels = ["Rent", "Utilities", "Miscellaneous", "Groceries", "Entertainment"];
+    const staticLabels = [
+      "Rent",
+      "Utilities",
+      "Miscellaneous",
+      "Groceries",
+      "Entertainment",
+    ];
     const backgroundColors = [
       "rgba(239, 68, 68, 1)", // Rent
       "rgba(59, 130, 246, 1)", // Utilities
       "rgba(234, 179, 8, 1)", // Miscellaneous
       "rgba(34, 197, 94, 1)", // Groceries
-      "rgba(139, 92, 246, 1)" // Entertainment
+      "rgba(139, 92, 246, 1)", // Entertainment
     ];
     const borderColors = [
       "rgba(255, 99, 132, 1)", // Rent
       "rgba(54, 162, 235, 1)", // Utilities
       "rgba(255, 206, 86, 1)", // Miscellaneous
       "rgba(75, 192, 192, 1)", // Groceries
-      "rgba(153, 102, 255, 1)" // Entertainment
+      "rgba(153, 102, 255, 1)", // Entertainment
     ];
 
     // Initialize chartData with zeros
     const chartData = new Array(staticLabels.length).fill(0);
 
     // Map API data to static labels
-    data.data.forEach(item => {
+    data.data.forEach((item) => {
       const index = staticLabels.indexOf(item.category);
       if (index !== -1) {
         chartData[index] = item.total_amount;
@@ -271,7 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const fetchData = async () => {
     try {
-      const userid = 2;
+      //const userid = 2;
       const response = await fetch(
         `http://localhost:3000/transactions/getTransactions`,
         {
@@ -322,11 +327,12 @@ document.addEventListener("DOMContentLoaded", () => {
   popupForm.addEventListener("submit", async (event) => {
     event.preventDefault(); // Prevent the form from submitting normally
     const formData = new FormData(popupForm);
-    const userid = 2;
+    //const userid = 2;
     if (userid) {
       formData.append("userid", userid);
     }
     const transactionData = Object.fromEntries(formData);
+
     try {
       let response;
       if (isEditing) {
@@ -387,17 +393,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to edit a transaction
   window.editTransaction = async (id) => {
-    const transactionRow = document.querySelector(tr[(id = "${id}")]);
+    // const transactionRow = document.querySelector(`tr[data-id="${id}"]`);
+    // const transactionRow = Array.from(data.children).find(
+    //   (transactions) => transactions.children[0].textContent === id
+    // );
+    const transactionRow = document.querySelector(`tr[data-id="${id}"]`);
+    console.log(transactionRow);
     if (transactionRow) {
       const cells = transactionRow.children;
       console.log("Editing transaction with ID:", id);
-      console.log("Cells:", cells);
+      console.log("Cells:", cells[2].textContent.trim());
+      // document.getElementById("transactionId").value = id;
+      // document.getElementById("name").value = cells[0].textContent.trim();
+      // document.getElementById("date").value = cells[1].textContent.trim();
+      // document.getElementById("category").value = cells[2].textContent.trim();
+      // document.getElementById("amount").value = cells[3].textContent.trim();
+      const name = cells[0].textContent.trim(); // Assuming the first cell contains the name
+      const date = cells[1].textContent.trim(); // Second cell contains the date
+      const category = cells[3].textContent.trim(); // Third cell contains the category
+      const amount = parseInt(cells[2].textContent.trim()); // Fourth cell contains the amount
 
+      // Logging for debugging
+      console.log("Editing transaction with ID:", id);
+      console.log("Name:", name);
+      console.log("Date:", date);
+      console.log("Category:", category);
+      console.log("Amount:", amount);
+
+      // Setting values to the modal inputs
       document.getElementById("transactionId").value = id;
-      document.getElementById("name").value = cells[0].textContent;
-      document.getElementById("date").value = cells[1].textContent;
-      document.getElementById("category").value = cells[2].textContent;
-      document.getElementById("amount").value = cells[3].textContent;
+      document.getElementById("name").value = name;
+      document.getElementById("date").value = date;
+      document.getElementById("category").value = category;
+      document.getElementById("amount").value = amount;
 
       isEditing = true;
       document.getElementById("myModal").classList.remove("hidden");
@@ -411,8 +439,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // to set today's date by default
 function setDefaultDate() {
-  var today = new Date().toISOString().split('T')[0];
-  document.getElementById('date').value = today;
+  var today = new Date().toISOString().split("T")[0];
+  document.getElementById("date").value = today;
 }
 
 window.onload = setDefaultDate;

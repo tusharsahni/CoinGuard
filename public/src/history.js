@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   );
 });
-
+const userid = localStorage.getItem("userId");
 const displayTransactions = (transactions) => {
   data.innerHTML = "";
   transactions.forEach((transaction) => {
@@ -17,149 +17,13 @@ const displayTransactions = (transactions) => {
                 <td class="px-6 py-3">${transaction.date}</td>
                 <td class="px-6 py-3">${parseFloat(transaction.amount).toFixed(
                   2
-                )}</td> <!-- Format amount -->
+                )}</td>
                 <td class="px-6 py-3">${transaction.category}</td>
             `;
 
     data.appendChild(row);
   });
 };
-
-// function updateProgress() {
-//     const monthlyIncome = 10000;
-//     const monthlyExpenses = 2345.67;
-//     const progressBar = document.getElementById('progress-bar');
-//     const progressPercentage = (monthlyExpenses / monthlyIncome) * 100;
-//     progressBar.style.width = progressPercentage + '%';
-//     document.getElementById('progress-text').innerText = progressPercentage.toFixed(2) + '%';
-// }
-
-// window.onload = function () {
-//     updateProgress();
-// };
-
-//document.addEventListener('DOMContentLoaded', () => {
-// const popupForm = document.getElementById("popupForm");
-// const data = document.getElementById("data");
-// const errorMessage = document.getElementById("errorMessage");
-// let isEditing = false;
-// let currentEditId = null;
-
-// const fetchData = async () => {
-//     try {
-//         const response = await fetch(`http://localhost:3000/transactions/getTransactions`);
-//         if (!response.ok) {
-//             throw new Error(`Network response was not ok`);
-//         }
-//         const transactions = await response.json();
-//         displayTransactions(transactions.data);
-//     } catch (error) {
-//         console.log('Fetch error:', error);
-//         errorMessage.textContent = `Server side error`;
-//     }
-// };
-
-// const displayTransactions = (transactions) => {
-//     data.innerHTML = "";
-//     transactions.forEach((transaction) => {
-//         const row = document.createElement("tr");
-//         row.innerHTML = `
-//             <td>${transaction.name}</td>
-//             <td>${transaction.type ? "Income" : "Expense"}</td>
-//             <td>${transaction.date}</td>
-//             <td>${transaction.amount}</td>
-//             <td>${transaction.category}</td>
-//             <td>
-//                 <button onclick="editTransaction('${transaction.id}')"><u>Edit</u></button>
-//                 <button onclick="deleteTransaction('${transaction.id}')"><u>Delete</u></button>
-//             </td>
-//         `;
-//         data.appendChild(row);
-//     });
-// };
-
-// // Function to handle adding or editing a transaction
-// popupForm.addEventListener("submit", async (event) => {
-//     event.preventDefault(); // Prevent the form from submitting normally
-//     const formData = new FormData(popupForm);
-//     const transactionData = Object.fromEntries(formData);
-//     let response;
-//     let responseData;
-
-//     try {
-//         if (isEditing && currentEditId) {
-//             response = await fetch(
-//                 `http://localhost:3000/transactions/transactions/${currentEditId}`,
-//                 {
-//                     method: "PUT",
-//                     headers: { "Content-Type": "application/json" },
-//                     body: JSON.stringify(transactionData),
-//                 }
-//             );
-//         } else {
-//             response = await fetch(`http://localhost:3000/transactions/transactions`, {
-//                 method: "POST",
-//                 headers: { "Content-Type": "application/json" },
-//                 body: JSON.stringify(transactionData),
-//             });
-//         }
-
-//         responseData = await response.json();
-
-//         if (response.ok) {
-//             alert(responseData.message);
-//             popupForm.reset();
-//             fetchData();
-//             isEditing = false;
-//             currentEditId = null;
-//             document.getElementById('myModal').classList.add('hidden');
-//         } else {
-//             throw new Error(responseData.message || 'An error occurred');
-//         }
-//     } catch (error) {
-//         console.log('Error:', error);
-//         errorMessage.textContent = error.message;
-//     }
-// });
-
-// // Function to delete a transaction
-// window.deleteTransaction = async (id) => {
-//     try {
-//         const response = await fetch(
-//             `http://localhost:3000/transactions/transactions/${id}`, {
-//             method: 'DELETE'
-//         });
-
-//         const responseData = await response.json();
-//         if (!response.ok) {
-//             throw new Error(responseData.error);
-//         }
-//         alert(responseData.message);
-//         fetchData();
-//     } catch (error) {
-//         console.log('Delete error:', error);
-//         errorMessage.textContent = error.message;
-//     }
-// };
-
-// // Function to edit a transaction
-// window.editTransaction = (id) => {
-//     const transaction = Array.from(data.children).find(
-//         (transaction) => transaction.children[0].textContent === id
-//     );
-
-//     if (transaction) {
-//         document.getElementById("transactionId").value = transaction.children[0].textContent;
-//         document.getElementById("name").value = transaction.children[1].textContent;
-//         document.getElementById("type").value = transaction.children[2].textContent === "Income" ? "true" : "false";
-//         document.getElementById("date").value = transaction.children[3].textContent;
-//         document.getElementById("amount").value = transaction.children[4].textContent;
-//         document.getElementById("category").value = transaction.children[5].textContent;
-//         isEditing = true;
-//         currentEditId = id;
-//         document.getElementById('myModal').classList.remove('hidden');
-//     }
-// };
 
 //function to display transactions
 document.addEventListener("DOMContentLoaded", () => {
@@ -170,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const fetchData = async () => {
     try {
-      const userid = 2;
+      //const userid = 2;
       const response = await fetch(
         `http://localhost:3000/transactions/getHistory`,
         {
@@ -213,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
   popupForm.addEventListener("submit", async (event) => {
     event.preventDefault(); // Prevent the form from submitting normally
     const formData = new FormData(popupForm);
-    const userid = 2;
+    //const userid = 2;
     if (userid) {
       formData.append("userid", userid);
     }
@@ -403,7 +267,7 @@ document.addEventListener("click", function (event) {
 async function showCategory(category) {
   const errorMessage = document.getElementById("errorMessage");
   try {
-    const userid = 2;
+    //const userid = 2;
     if (category === "All") {
       location.reload();
     }
@@ -430,13 +294,22 @@ document
   .addEventListener("click", async function () {
     document.getElementById("dropdown-content").classList.add("show");
   });
+document.getElementById("filterDate").addEventListener("click", function () {
+  document.getElementById("dropdown-content").classList.remove("hidden");
+});
+
+document.querySelectorAll(".close").forEach((el) => {
+  el.addEventListener("click", function () {
+    document.getElementById("dropdown-content").classList.add("hidden");
+  });
+});
 
 document
   .getElementById("applyFilter")
   .addEventListener("click", async function () {
     var startDate = document.getElementById("startDate").value;
     var endDate = document.getElementById("endDate").value;
-    const userid = 2;
+    //const userid = 2;
     console.log("Selected dates:", startDate, "to", endDate);
     if (startDate && endDate) {
       console.log("Selected dates:", startDate, "to", endDate);
@@ -458,16 +331,3 @@ document
       alert("Please select both start and end dates.");
     }
   });
-
-// Close the dropdown if the user clicks outside of it
-// window.onclick = function (event) {
-//   if (!event.target.matches("#filterDate")) {
-//     var dropdowns = document.getElementsByClassName("dropdown-content");
-//     for (var i = 0; i < dropdowns.length; i++) {
-//       var openDropdown = dropdowns[i];
-//       if (openDropdown.classList.contains("show")) {
-//         openDropdown.classList.remove("show");
-//       }
-//     }
-//   }
-// };

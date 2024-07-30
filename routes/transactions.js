@@ -65,20 +65,25 @@ router.post("/transactions", async (req, res) => {
 
 //UPDATION
 router.put("/transactions", async (req, res) => {
-  const { name, date, category, amount, userid } = req.body;
+  try {
+    const { name, date, category, amount, id } = req.body;
 
-  //validate input fields
-  if (!userid || !name || !date || !category || !amount) {
-    return res.status(400).json("All fields required");
+    //validate input fields
+    if (!id || !name || !date || !category || !amount) {
+      return res.status(400).json("All fields required");
+    }
+    const result = await pool.query(
+      "UPDATE transactions SET name = $1,  date = $2, category = $3, amount = $4 WHERE id = $5 RETURNING *",
+      [name, date, category, amount, id]
+    );
+    res.status(201).json({
+      message: "Transaction updated successfully",
+      data: result.rows[0],
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json("Internal server error");
   }
-  const result = await pool.query(
-    "UPDATE transactions SET name = $1,  date = $2, category = $3, amount = $4 WHERE id = $5 RETURNING *",
-    [name, date, category, amount, userid]
-  );
-  res.status(201).json({
-    message: "Transaction updated successfully",
-    data: result.rows[0],
-  });
 });
 
 //DELETION
