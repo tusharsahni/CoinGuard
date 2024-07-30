@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         if (data.email) {
           // Verify the response contains user data
-          window.location.replace = "budget.html"; // Redirect if token is valid
+          window.location.href = "budget.html"; // Redirect if token is valid
         }
       })
       .catch((error) => console.error("Error verifying token:", error));
