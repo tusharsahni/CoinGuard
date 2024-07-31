@@ -156,7 +156,7 @@ async function fetchChartData() {
     const staticLabels = [
       "Rent",
       "Utilities",
-      "Miscellaneous",
+      "Misc",
       "Groceries",
       "Entertainment",
     ];
