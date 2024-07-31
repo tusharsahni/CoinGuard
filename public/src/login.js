@@ -83,10 +83,10 @@ fetch("https://restcountries.com/v3.1/all")
 
     data.forEach((country) => {
       // Add countries to the country dropdown
-      const countryOption = document.createElement("option");
-      countryOption.value = country.name.common;
-      countryOption.textContent = country.name.common;
-      countryDropdown.appendChild(countryOption);
+      // const countryOption = document.createElement("option");
+      // countryOption.value = country.name.common;
+      // countryOption.textContent = country.name.common;
+      // countryDropdown.appendChild(countryOption);
 
       // Add country codes to the country code dropdown
       if (country.idd.root && country.idd.suffixes) {
@@ -139,6 +139,15 @@ document.addEventListener("DOMContentLoaded", () => {
 const signupForm = document.getElementById("signupForm");
 signupForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirm-password").value;
+
+  // Check if passwords match
+  if (password !== confirmPassword) {
+    alert('Password and Confirm Password do not match.');
+    return; // Exit the function to prevent form submission
+  }
+
   const formData = new FormData(signupForm);
   const userData = Object.fromEntries(formData.entries());
   try {
