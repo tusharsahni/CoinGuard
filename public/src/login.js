@@ -139,11 +139,12 @@ document.addEventListener("DOMContentLoaded", () => {
 const signupForm = document.getElementById("signupForm");
 signupForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("confirm-password").value;
-
+  const password = document.getElementById("password1").value;
+  const confirmpassword = document.getElementById("confirm-password").value;
+  console.log(password);
+  console.log(confirmpassword);
   // Check if passwords match
-  if (password !== confirmPassword) {
+  if (password !== confirmpassword) {
     alert('Password and Confirm Password do not match.');
     return; // Exit the function to prevent form submission
   }

@@ -8,11 +8,11 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 // REGISTER ENDPOINT
 router.post("/register", async (req, res) => {
-  const { email, name, gender, password, country, contact, budget} = req.body;
+  const { email, name, gender, password1, country, contact, budget} = req.body;
 
   try {
     // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password1, 10);
 
     // Begin transaction
     await pool.query("BEGIN");

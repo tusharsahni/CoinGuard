@@ -55,7 +55,7 @@ function hideDropdown() {
 function logout() {
   // localStorage.removeItem("token");
   localStorage.clear();
-  window.location.replace = "./login.html";
+  window.location.href = "./login.html";
 }
 
 function initializeNavListeners() {
