@@ -8,7 +8,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 // REGISTER ENDPOINT
 router.post("/register", async (req, res) => {
-  const { email, name, gender, password, country, contact } = req.body;
+  const { email, name, gender, password, country, contact, budget} = req.body;
 
   try {
     // Hash password
@@ -28,8 +28,8 @@ router.post("/register", async (req, res) => {
 
       // Insert user details into database
       await pool.query(
-        `INSERT INTO user_details (user_id, name, contact, country, gender) VALUES ($1, $2, $3, $4, $5)`,
-        [userId, name, contact, country, gender]
+        `INSERT INTO user_details (user_id, name, contact, country, gender,budget) VALUES ($1, $2, $3, $4, $5, $6)`,
+        [userId, name, contact, country, gender, budget]
       );
 
       // Commit transaction
