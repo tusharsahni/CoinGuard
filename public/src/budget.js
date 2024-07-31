@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   const token = localStorage.getItem("token");
-  console.log('token:',token);
+  console.log("token:", token);
   if (!token) {
     window.location.href = "./login.html";
   }
@@ -220,7 +220,30 @@ async function fetchChartData() {
 }
 
 //function to initialize bar graph
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", async (event) => {
+  const response = await fetch(`http://localhost:3000/charts/linecharts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userid }),
+  });
+
+  const result = await response.json();
+  const data = result.data;
+
+  const monthMap = {
+    January: 0, February: 1, March: 2, April: 3, May: 4, June: 5,
+    July: 6, August: 7, September: 8, October: 9, November: 10, December: 11
+  };
+
+
+  //console.log(`data:`, data);
+  let monthlyAmounts = new Array(12).fill(0);
+  data.forEach((entry) => {
+    monthlyAmounts[monthMap[entry.month]] = parseInt(entry.total_amount);
+  });
+  console.log("amounts",monthlyAmounts);
   const ctx = document.getElementById("myChart").getContext("2d");
   const myChart = new Chart(ctx, {
     type: "line",
@@ -242,7 +265,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       datasets: [
         {
           label: "Expenses",
-          data: [12, 19, 3, 5, 2, 3, 5, 3, 69, 13, 12, 11],
+          data: monthlyAmounts,
           borderColor: "rgba(255, 99, 132, 1)",
         },
       ],
@@ -416,9 +439,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // document.getElementById("category").value = cells[2].textContent.trim();
       // document.getElementById("amount").value = cells[3].textContent.trim();
       const name = cells[0].textContent.trim();
-      const date = cells[1].textContent.trim(); 
-      const category = cells[3].textContent.trim(); 
-      const amount = parseInt(cells[2].textContent.trim()); 
+      const date = cells[1].textContent.trim();
+      const category = cells[3].textContent.trim();
+      const amount = parseInt(cells[2].textContent.trim());
 
       // Logging for debugging
       console.log("Editing transaction with ID:", id);

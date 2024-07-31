@@ -55,17 +55,25 @@ router.post("/progress", async (req, res) => {
   }
 });
 
-router.post("/linecharts/", async (req, res) => {
-  const { userid, categoryid } = req.body;
+router.post("/linecharts", async (req, res) => {
+  const { userid } = req.body;
 
   try {
     const response = await pool.query(
-      `SELECT category, SUM(amount) AS total_amount 
-               FROM transactions 
-               WHERE date >= DATE_TRUNC('month', CURRENT_DATE) 
-                 AND date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 month' 
-                 AND userid = $1 AND show = true
-               GROUP BY category`,
+      `SELECT 
+      TRIM(TO_CHAR(date, 'Month')) AS month,
+      SUM(amount) AS total_amount
+  FROM 
+      public.transactions
+  WHERE 
+      userid = $1
+      AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)
+  GROUP BY 
+      TRIM(TO_CHAR(date, 'Month')), 
+      DATE_TRUNC('month', date)
+  ORDER BY 
+      DATE_TRUNC('month', date);
+  `,
       [userid]
     );
 
