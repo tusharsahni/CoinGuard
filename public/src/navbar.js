@@ -93,6 +93,7 @@ async function fetchUserData() {
     document.getElementById(
       "UserDetail"
     ).innerHTML = `${data.name}<br>${data.contact}`;
+    
   } catch (error) {
     console.log(error);
   }

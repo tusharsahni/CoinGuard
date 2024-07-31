@@ -268,6 +268,8 @@ document.getElementById("openModalBtn").addEventListener("click", function () {
 
 document.querySelectorAll(".close").forEach((el) => {
   el.addEventListener("click", function () {
+    const pop = document.getElementById("popupForm");
+    pop.reset();
     document.getElementById("myModal").classList.add("hidden");
   });
 });
@@ -413,10 +415,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // document.getElementById("date").value = cells[1].textContent.trim();
       // document.getElementById("category").value = cells[2].textContent.trim();
       // document.getElementById("amount").value = cells[3].textContent.trim();
-      const name = cells[0].textContent.trim(); // Assuming the first cell contains the name
-      const date = cells[1].textContent.trim(); // Second cell contains the date
-      const category = cells[3].textContent.trim(); // Third cell contains the category
-      const amount = parseInt(cells[2].textContent.trim()); // Fourth cell contains the amount
+      const name = cells[0].textContent.trim();
+      const date = cells[1].textContent.trim(); 
+      const category = cells[3].textContent.trim(); 
+      const amount = parseInt(cells[2].textContent.trim()); 
 
       // Logging for debugging
       console.log("Editing transaction with ID:", id);
@@ -438,7 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Transaction row not found for ID:", id);
     }
   };
-
+  //popupForm.reset;
   fetchData();
 });
 
