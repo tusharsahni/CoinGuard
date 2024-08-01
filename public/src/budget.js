@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function updateProgress() {
     //const userid = 2;
-    const response = await fetch(`http://localhost:3000/charts/progress`, {
+    const response = await fetch(`https://coinguard-t3bb.onrender.com/charts/progress`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -142,7 +142,7 @@ function getParameterByName(name, url) {
 async function fetchChartData() {
   //const userid = 2;
   try {
-    const response = await fetch(`http://localhost:3000/charts/piecharts`, {
+    const response = await fetch(`https://coinguard-t3bb.onrender.com/charts/piecharts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -221,7 +221,7 @@ async function fetchChartData() {
 
 //function to initialize bar graph
 document.addEventListener("DOMContentLoaded", async (event) => {
-  const response = await fetch(`http://localhost:3000/charts/linecharts`, {
+  const response = await fetch(`https://coinguard-t3bb.onrender.com/charts/linecharts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -308,7 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       //const userid = 2;
       const response = await fetch(
-        `http://localhost:3000/transactions/getTransactions`,
+        `https://coinguard-t3bb.onrender.com/transactions/getTransactions`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -367,7 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let response;
       if (isEditing) {
         response = await fetch(
-          `http://localhost:3000/transactions/transactions`,
+          `https://coinguard-t3bb.onrender.com/transactions/transactions`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       } else {
         response = await fetch(
-          `http://localhost:3000/transactions/transactions`,
+          `https://coinguard-t3bb.onrender.com/transactions/transactions`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -401,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.deleteTransaction = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/transactions/transactions`,
+        `https://coinguard-t3bb.onrender.com/transactions/transactions`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },

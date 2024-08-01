@@ -75,7 +75,7 @@ async function fetchUserData() {
   const user_id = localStorage.getItem("userId");
   try {
     console.log(user_id);
-    const response = await fetch("http://localhost:3000/account/account", {
+    const response = await fetch("https://coinguard-t3bb.onrender.com/account/account", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
