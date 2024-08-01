@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (!token) {
     window.location.href = "../vercel/login.html";
   }
+  
   Promise.all([fetch("navbar.html").then((response) => response.text())]).then(
     (data) => {
       document.getElementById("navbar").innerHTML = data[0];
