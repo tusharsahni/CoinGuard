@@ -28,13 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // console.log("Submitting login form with", { email, password });
 
       try {
-        const response = await fetch("https://coinguard-t3bb.onrender.com/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
+        const response = await fetch(
+          "https://coinguard-t3bb.onrender.com/auth/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          }
+        );
 
         const loginError = document.getElementById("login-error");
 
@@ -47,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const userID = data.user_id;
           // window.location.href = "homepage.html"; // Redirect to success page
           //    window.location.href = `homepage.html`;
-          window.location.replace("budget.html");
+          window.location.replace("../src/budget.html");
         } else {
           const errorData = await response.json();
           console.log("Login failed:", errorData);
@@ -145,20 +148,23 @@ signupForm.addEventListener("submit", async (event) => {
   console.log(confirmpassword);
   // Check if passwords match
   if (password !== confirmpassword) {
-    alert('Password and Confirm Password do not match.');
+    alert("Password and Confirm Password do not match.");
     return; // Exit the function to prevent form submission
   }
 
   const formData = new FormData(signupForm);
   const userData = Object.fromEntries(formData.entries());
   try {
-    const response = await fetch("https://coinguard-t3bb.onrender.com/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
+    const response = await fetch(
+      "https://coinguard-t3bb.onrender.com/auth/register",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      }
+    );
 
     const responseData = await response.json();
     if (response.ok) {
