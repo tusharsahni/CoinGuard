@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       //const userid = 2;
       const response = await fetch(
-        `http://localhost:3000/transactions/getHistory`,
+        `https://coinguard-t3bb.onrender.com/transactions/getHistory`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let response;
       if (isEditing) {
         response = await fetch(
-          `http://localhost:3000/transactions/transactions`,
+          `https://coinguard-t3bb.onrender.com/transactions/transactions`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       } else {
         response = await fetch(
-          `http://localhost:3000/transactions/transactions`,
+          `https://coinguard-t3bb.onrender.com/transactions/transactions`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.deleteTransaction = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/transactions/transactions`,
+        `https://coinguard-t3bb.onrender.com/transactions/transactions`,
         {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
@@ -218,7 +218,7 @@ async function exportTableToPDF() {
 
 const sortDate = async () => {
   try {
-    const response = await fetch(`http://localhost:3000/search/sortdate`);
+    const response = await fetch(`https://coinguard-t3bb.onrender.com/search/sortdate`);
     if (!response.ok) {
       errorMessage.textContent = "Failed to fetch";
     }
@@ -277,7 +277,7 @@ async function showCategory(category) {
       location.reload();
     }
     const response = await fetch(
-      `http://localhost:3000/search/categorysearch`,
+      `https://coinguard-t3bb.onrender.com/search/categorysearch`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -320,7 +320,7 @@ document
       console.log("Selected dates:", startDate, "to", endDate);
       // You can add your filtering logic here
 
-      const response = await fetch(`http://localhost:3000/search/datesearch`, {
+      const response = await fetch(`https://coinguard-t3bb.onrender.com/search/datesearch`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const token = localStorage.getItem("token"); // Retrieve token from local storage
 
   if (token) {
-    fetch("http://localhost:3000/auth/verify", {
+    fetch("https://coinguard-t3bb.onrender.com/auth/verify", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // console.log("Submitting login form with", { email, password });
 
       try {
-        const response = await fetch("http://localhost:3000/auth/login", {
+        const response = await fetch("https://coinguard-t3bb.onrender.com/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -152,7 +152,7 @@ signupForm.addEventListener("submit", async (event) => {
   const formData = new FormData(signupForm);
   const userData = Object.fromEntries(formData.entries());
   try {
-    const response = await fetch("http://localhost:3000/auth/register", {
+    const response = await fetch("https://coinguard-t3bb.onrender.com/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
