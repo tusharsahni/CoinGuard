@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const userID = data.user_id;
           // window.location.href = "homepage.html"; // Redirect to success page
           //    window.location.href = `homepage.html`;
-          window.location.replace("../src/budget.html");
+          window.location.replace("./budget.html");
         } else {
           const errorData = await response.json();
           console.log("Login failed:", errorData);
