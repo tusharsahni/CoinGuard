@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   const token = localStorage.getItem("token");
   console.log("token:", token);
   if (!token) {
-    window.location.href = "../vercel/login.html";
+    window.location.href = "../vercel/index.html";
   }
   Promise.all([fetch("navbar.html").then((response) => response.text())]).then(
     (data) => {

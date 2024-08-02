@@ -55,7 +55,7 @@ function hideDropdown() {
 function logout() {
   // localStorage.removeItem("token");
   localStorage.clear();
-  window.location.href = "../vercel/login.html";
+  window.location.href = "../vercel/index.html";
 }
 
 function initializeNavListeners() {
